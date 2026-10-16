@@ -11,6 +11,8 @@ import 'content_type.dart';
 final class AssetContentProvider implements ContentProvider {
   static const String _breathingPatternsKey = 'packages/data/assets/content/breathing_patterns.json';
   static const String _quotesKey = 'packages/data/assets/content/quotes.json';
+  static const String _textsKey = 'packages/data/assets/content/texts.json';
+  static const String _lunfardoWordsKey = 'packages/data/assets/content/lunfardo_words.json';
 
   final AssetBundle _bundle;
 
@@ -26,6 +28,16 @@ final class AssetContentProvider implements ContentProvider {
   @override
   Future<List<QuoteEntity>> loadQuotes() {
     return _loadList(_quotesKey, ContentType.quotes, QuoteEntity.fromJson);
+  }
+
+  @override
+  Future<List<TextEntity>> loadTexts() {
+    return _loadList(_textsKey, ContentType.texts, TextEntity.fromJson);
+  }
+
+  @override
+  Future<List<LunfardoWordEntity>> loadLunfardoWords() {
+    return _loadList(_lunfardoWordsKey, ContentType.lunfardoWords, LunfardoWordEntity.fromJson);
   }
 
   Future<List<T>> _loadList<T>(

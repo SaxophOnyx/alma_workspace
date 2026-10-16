@@ -8,6 +8,7 @@ final class AppColorsTheme extends ThemeExtension<AppColorsTheme> {
   final Color textSecondary;
   final Color accent;
   final Color signal;
+  final Color overlay;
 
   const AppColorsTheme({
     required this.background,
@@ -15,6 +16,7 @@ final class AppColorsTheme extends ThemeExtension<AppColorsTheme> {
     required this.textSecondary,
     required this.accent,
     required this.signal,
+    required this.overlay,
   });
 
   factory AppColorsTheme.dark() {
@@ -24,6 +26,7 @@ final class AppColorsTheme extends ThemeExtension<AppColorsTheme> {
       textSecondary: AppColors.humo,
       accent: AppColors.oro,
       signal: AppColors.carmin,
+      overlay: AppColors.negroOverlay,
     );
   }
 
@@ -34,6 +37,7 @@ final class AppColorsTheme extends ThemeExtension<AppColorsTheme> {
     Color? textSecondary,
     Color? accent,
     Color? signal,
+    Color? overlay,
   }) {
     return AppColorsTheme(
       background: background ?? this.background,
@@ -41,6 +45,7 @@ final class AppColorsTheme extends ThemeExtension<AppColorsTheme> {
       textSecondary: textSecondary ?? this.textSecondary,
       accent: accent ?? this.accent,
       signal: signal ?? this.signal,
+      overlay: overlay ?? this.overlay,
     );
   }
 
@@ -59,6 +64,7 @@ final class AppColorsTheme extends ThemeExtension<AppColorsTheme> {
       textSecondary: Color.lerp(textSecondary, other.textSecondary, t)!,
       accent: Color.lerp(accent, other.accent, t)!,
       signal: Color.lerp(signal, other.signal, t)!,
+      overlay: Color.lerp(overlay, other.overlay, t)!,
     );
   }
 }

@@ -8,6 +8,8 @@ class _MockAssetBundle extends Mock implements AssetBundle {}
 
 const String _patternsKey = 'packages/data/assets/content/breathing_patterns.json';
 const String _quotesKey = 'packages/data/assets/content/quotes.json';
+const String _textsKey = 'packages/data/assets/content/texts.json';
+const String _wordsKey = 'packages/data/assets/content/lunfardo_words.json';
 
 void main() {
   late _MockAssetBundle bundle;
@@ -124,6 +126,99 @@ void main() {
       );
 
       await expectLater(provider.loadQuotes(), contentLoadException(ContentType.quotes));
+    });
+  });
+
+  group('loadTexts', () {
+    test('parses texts with nested stanzas', () async {
+      when(() => bundle.loadString(_textsKey)).thenAnswer(
+        (_) async => '''
+[
+  {
+    "id": "yira_yira",
+    "title": "Yira, yira",
+    "author": "Enrique Santos Discépolo",
+    "year": 1930,
+    "context": "Argentina after the 1930 coup.",
+    "stanzas": [["uno", "que es {grela}"], ["tres"]]
+  }
+]''',
+      );
+
+      final List<TextEntity> texts = await provider.loadTexts();
+
+      expect(texts.single.id, 'yira_yira');
+      expect(texts.single.author, 'Enrique Santos Discépolo');
+      expect(texts.single.year, 1930);
+      expect(texts.single.context, 'Argentina after the 1930 coup.');
+      expect(texts.single.stanzas, <List<String>>[
+        <String>['uno', 'que es {grela}'],
+        <String>['tres'],
+      ]);
+      verify(() => bundle.loadString(_textsKey)).called(1);
+    });
+
+    test('returns an empty list for an empty array', () async {
+      when(() => bundle.loadString(_textsKey)).thenAnswer((_) async => '[]');
+
+      expect(await provider.loadTexts(), isEmpty);
+    });
+
+    test('throws ContentLoadException when the asset is missing', () async {
+      when(() => bundle.loadString(_textsKey)).thenThrow(FlutterError('Unable to load asset'));
+
+      await expectLater(provider.loadTexts(), contentLoadException(ContentType.texts));
+    });
+
+    test('throws ContentLoadException when stanzas are not nested lists', () async {
+      when(() => bundle.loadString(_textsKey)).thenAnswer(
+        (_) async => '[{"id": "a", "title": "A", "author": "B", "year": 1930, "context": "c", "stanzas": ["uno"]}]',
+      );
+
+      await expectLater(provider.loadTexts(), contentLoadException(ContentType.texts));
+    });
+
+    test('throws ContentLoadException when a required field is missing', () async {
+      when(() => bundle.loadString(_textsKey)).thenAnswer(
+        (_) async => '[{"id": "a", "title": "A", "year": 1930, "context": "c", "stanzas": []}]',
+      );
+
+      await expectLater(provider.loadTexts(), contentLoadException(ContentType.texts));
+    });
+  });
+
+  group('loadLunfardoWords', () {
+    test('parses words', () async {
+      when(() => bundle.loadString(_wordsKey)).thenAnswer(
+        (_) async => '[{"id": "grela", "word": "grela", "meaning": "fickle fate", "etymology": "Italian grilla"}]',
+      );
+
+      final List<LunfardoWordEntity> words = await provider.loadLunfardoWords();
+
+      expect(words.single.id, 'grela');
+      expect(words.single.word, 'grela');
+      expect(words.single.meaning, 'fickle fate');
+      expect(words.single.etymology, 'Italian grilla');
+    });
+
+    test('returns an empty list for an empty array', () async {
+      when(() => bundle.loadString(_wordsKey)).thenAnswer((_) async => '[]');
+
+      expect(await provider.loadLunfardoWords(), isEmpty);
+    });
+
+    test('throws ContentLoadException when the asset is missing', () async {
+      when(() => bundle.loadString(_wordsKey)).thenThrow(FlutterError('Unable to load asset'));
+
+      await expectLater(provider.loadLunfardoWords(), contentLoadException(ContentType.lunfardoWords));
+    });
+
+    test('throws ContentLoadException when a required field is null', () async {
+      when(() => bundle.loadString(_wordsKey)).thenAnswer(
+        (_) async => '[{"id": "grela", "word": null, "meaning": "fickle fate", "etymology": "Italian grilla"}]',
+      );
+
+      await expectLater(provider.loadLunfardoWords(), contentLoadException(ContentType.lunfardoWords));
     });
   });
 }

@@ -33,4 +33,26 @@ final class SharedPreferencesLocalStorageProvider implements LocalStorageProvide
       throw const LocalStorageException(LocalStorageOperation.write);
     }
   }
+
+  @override
+  Future<List<String>?> getStringList(String key) async {
+    try {
+      return await _preferences.getStringList(key);
+    } on PlatformException catch (_) {
+      throw const LocalStorageException(LocalStorageOperation.read);
+    } on Exception catch (_) {
+      throw const LocalStorageException(LocalStorageOperation.read);
+    }
+  }
+
+  @override
+  Future<void> setStringList(String key, List<String> value) async {
+    try {
+      await _preferences.setStringList(key, value);
+    } on PlatformException catch (_) {
+      throw const LocalStorageException(LocalStorageOperation.write);
+    } on Exception catch (_) {
+      throw const LocalStorageException(LocalStorageOperation.write);
+    }
+  }
 }

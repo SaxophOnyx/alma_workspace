@@ -43,6 +43,21 @@ final class DataDI {
         contentProvider: locator<ContentProvider>(),
       ),
     );
+    locator.registerLazySingleton<TextRepository>(
+      () => LocalTextRepository(
+        contentProvider: locator<ContentProvider>(),
+      ),
+    );
+    locator.registerLazySingleton<LunfardoWordRepository>(
+      () => LocalLunfardoWordRepository(
+        contentProvider: locator<ContentProvider>(),
+      ),
+    );
+    locator.registerLazySingleton<DictionaryRepository>(
+      () => LocalDictionaryRepository(
+        localStorageProvider: locator<LocalStorageProvider>(),
+      ),
+    );
   }
 
   static void _initServices(GetIt locator) {

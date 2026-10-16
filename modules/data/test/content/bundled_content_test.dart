@@ -44,4 +44,45 @@ void main() {
 
     expect(quotes, isNotEmpty);
   });
+
+  test('bundled texts map cleanly and have unique ids', () async {
+    final List<TangoText> texts = await LocalTextRepository(contentProvider: provider).getTexts();
+
+    expect(texts, isNotEmpty);
+    expect(texts.map((TangoText t) => t.id).toSet(), hasLength(texts.length));
+  });
+
+  test('bundled Lunfardo words map cleanly and have unique ids', () async {
+    final List<LunfardoWord> words = await LocalLunfardoWordRepository(contentProvider: provider).getWords();
+
+    expect(words, isNotEmpty);
+    expect(words.map((LunfardoWord w) => w.id).toSet(), hasLength(words.length));
+  });
+
+  test('every word annotated in a text exists in the Lunfardo words', () async {
+    final List<TangoText> texts = await LocalTextRepository(contentProvider: provider).getTexts();
+    final Set<String> wordIds = (await LocalLunfardoWordRepository(contentProvider: provider).getWords())
+        .map((LunfardoWord w) => w.id)
+        .toSet();
+
+    final Set<String> annotated = <String>{
+      for (final TangoText text in texts)
+        for (final TextStanza stanza in text.stanzas)
+          for (final TextLine line in stanza.lines)
+            for (final TextSegment segment in line.segments)
+              if (segment.wordId case final String wordId) wordId,
+    };
+
+    expect(annotated, isNotEmpty);
+    expect(annotated.difference(wordIds), isEmpty);
+  });
+
+  test('every quote links to a bundled text', () async {
+    final List<Quote> quotes = await LocalQuoteRepository(contentProvider: provider).getQuotes();
+    final Set<String> textIds = (await LocalTextRepository(contentProvider: provider).getTexts())
+        .map((TangoText t) => t.id)
+        .toSet();
+
+    expect(quotes.map((Quote q) => q.textId).toSet().difference(textIds), isEmpty);
+  });
 }

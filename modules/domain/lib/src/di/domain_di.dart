@@ -32,6 +32,31 @@ final class DomainDI {
         quoteRepository: locator<QuoteRepository>(),
       ),
     );
+    locator.registerLazySingleton<GetTextsUseCase>(
+      () => GetTextsUseCase(
+        textRepository: locator<TextRepository>(),
+      ),
+    );
+    locator.registerLazySingleton<GetTextUseCase>(
+      () => GetTextUseCase(
+        textRepository: locator<TextRepository>(),
+      ),
+    );
+    locator.registerLazySingleton<GetLunfardoWordUseCase>(
+      () => GetLunfardoWordUseCase(
+        lunfardoWordRepository: locator<LunfardoWordRepository>(),
+      ),
+    );
+    locator.registerLazySingleton<IsWordInDictionaryUseCase>(
+      () => IsWordInDictionaryUseCase(
+        dictionaryRepository: locator<DictionaryRepository>(),
+      ),
+    );
+    locator.registerLazySingleton<AddWordToDictionaryUseCase>(
+      () => AddWordToDictionaryUseCase(
+        dictionaryRepository: locator<DictionaryRepository>(),
+      ),
+    );
     locator.registerLazySingleton<PlayPhaseHapticUseCase>(
       () => PlayPhaseHapticUseCase(
         hapticFeedbackService: locator<HapticFeedbackService>(),

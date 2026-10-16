@@ -1,0 +1,77 @@
+[
+  {
+    "id": "yira_yira",
+    "title": "Yira, yira",
+    "author": "Enrique Santos Discépolo",
+    "year": 1930,
+    "context": "Argentina after the 1930 coup and the first blows of the Great Depression. Factories close and soup lines appear in Buenos Aires. Discépolo writes a song about a man abandoned by everyone, including luck.",
+    "stanzas": [
+      [
+        "Y si un día la suerte,",
+        "que es {grela}, te deja,",
+        "vas a ver que el {mango}",
+        "se te escapa de la mano."
+      ],
+      [
+        "Ni el {laburo} ni la {guita}",
+        "te van a esperar,",
+        "y el {chamuyo} del amigo",
+        "se apaga al llegar."
+      ],
+      [
+        "Las calles giran solas,",
+        "el día se hace largo,",
+        "y en el bolsillo vacío",
+        "sólo te queda la {yeta}."
+      ]
+    ]
+  },
+  {
+    "id": "mi_noche_triste",
+    "title": "Mi noche triste",
+    "author": "Pascual Contursi",
+    "year": 1917,
+    "context": "Buenos Aires in 1917 is a city of immigrants crowded into conventillos. Contursi sets words to an existing tango melody, and Carlos Gardel sings it. It is often called the first tango-canción: the moment tango begins to tell stories.",
+    "stanzas": [
+      [
+        "La {mina} se fue temprano,",
+        "dejó la puerta abierta,",
+        "y en el cuarto quedó solo",
+        "su perfume {fané}."
+      ],
+      [
+        "Ya no {morfo|morfar} con ganas,",
+        "me agarró la {mufa},",
+        "y la noche, compañera,",
+        "no me quiere hablar."
+      ]
+    ]
+  },
+  {
+    "id": "mano_a_mano",
+    "title": "Mano a mano",
+    "author": "Celedonio Flores",
+    "year": 1923,
+    "context": "The early 1920s: the arrabal watches its young women leave for the cabarets of the center. Celedonio Flores, a poet of the Boedo neighborhood, writes a farewell without reproach. Gardel records it the same year.",
+    "stanzas": [
+      [
+        "Hoy estamos mano a mano,",
+        "vos con tu {bacán} de lujo,",
+        "yo con mi {laburo} de siempre",
+        "y un cigarro sin encender."
+      ],
+      [
+        "Cuando eras {piba|pibe} del barrio,",
+        "no sabías de {guita},",
+        "y ahora que el mundo te mira",
+        "te olvidaste de la esquina."
+      ],
+      [
+        "Si mañana sos {linyera}",
+        "o la suerte te da vuelta,",
+        "acordate que en la esquina",
+        "queda un amigo que espera."
+      ]
+    ]
+  }
+]

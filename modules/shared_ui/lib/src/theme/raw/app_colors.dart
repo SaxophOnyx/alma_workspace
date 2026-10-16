@@ -8,4 +8,5 @@ final class AppColors {
   static const Color oro = Color(0xFFC4A265);
   static const Color humo = Color(0xFF8A8078);
   static const Color carmin = Color(0xFF7B2233);
+  static const Color negroOverlay = Color(0xF20D0B09);
 }

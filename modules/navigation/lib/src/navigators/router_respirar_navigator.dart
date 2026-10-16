@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter/widgets.dart';
+import 'package:leer/leer.dart';
 import 'package:respirar/respirar.dart';
 
 import '../router/app_router.dart';
@@ -46,8 +47,8 @@ final class RouterRespirarNavigator implements RespirarNavigator {
   }
 
   @override
-  Future<void> openText(String textId) async {
-    // TODO(leer): push the Leer context card for [textId] once the Leer module exists.
+  Future<void> openText(String textId) {
+    return _appRouter.push(LeerContextRoute(textId: textId));
   }
 
   @override

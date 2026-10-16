@@ -14,6 +14,7 @@ final class AppMotions {
 
   static const Duration staggerInterval = Duration(milliseconds: 600);
 
+  static const Duration silenceStanza = Duration(seconds: 1);
   static const Duration silenceShort = Duration(seconds: 2);
   static const Duration silenceLong = Duration(seconds: 3);
 

@@ -1,4 +1,5 @@
 import 'package:home/home.dart';
+import 'package:leer/leer.dart';
 import 'package:respirar/respirar.dart';
 
 import '../router/app_router.dart';
@@ -21,7 +22,7 @@ final class RouterHomeNavigator implements HomeNavigator {
   }
 
   @override
-  Future<void> openLeer() async {
-    // TODO(leer): open the Leer module once it exists.
+  Future<void> openLeer() {
+    return _appRouter.push(const LeerTextListRoute());
   }
 }

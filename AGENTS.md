@@ -47,6 +47,7 @@ Product requirements live in `.agent-docs/`. Read only the file relevant to the 
 - `03_USE_CASES.md` — six persona scenarios.
 - `04_ONBOARDING.md` — four-slide onboarding spec, timings, `onboarding_complete` persistence, Android back behavior.
 - `05_features/` — one file per feature (14 features, 47 user stories with Given/When/Then acceptance criteria); `README.md` is the index with priorities.
+- `06_UNFINISHED.md` — placeholders and known gaps (Leer seed content, content schemas, pending Hablar links).
 
 Where specs name tech choices that differ from **Stack** above (e.g. `go_router`), the Stack section wins.
 

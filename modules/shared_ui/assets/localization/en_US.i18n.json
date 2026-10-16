@@ -28,6 +28,26 @@
       "home": "Home"
     }
   },
+  "leer": {
+    "title": "Leer",
+    "read": "Read",
+    "annotation": {
+      "add": "Add to my dictionary",
+      "inDictionary": "In dictionary",
+      "close": "Close"
+    },
+    "end": {
+      "anotherText": "Another text",
+      "breathe": "Breathe with this text",
+      "home": "Home"
+    },
+    "errors": {
+      "textUnavailable": "This text could not be opened.",
+      "wordUnavailable": "This word could not be opened.",
+      "dictionaryUnavailable": "Your dictionary is unavailable right now.",
+      "unknown": "Something went wrong."
+    }
+  },
   "onboarding": {
     "skip": "Skip",
     "intro": {

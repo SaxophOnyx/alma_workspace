@@ -1,0 +1,15 @@
+[
+  { "id": "grela", "word": "grela", "meaning": "fickle fate", "etymology": "Italian grilla, \"cricket\"" },
+  { "id": "mango", "word": "mango", "meaning": "a peso; money", "etymology": "Possibly Caló mangar, \"to beg\"" },
+  { "id": "laburo", "word": "laburo", "meaning": "work, a job", "etymology": "Italian lavoro, \"work\"" },
+  { "id": "guita", "word": "guita", "meaning": "money", "etymology": "Spanish germanía guita, \"purse string\"" },
+  { "id": "chamuyo", "word": "chamuyo", "meaning": "smooth talk, sweet-talking", "etymology": "Caló chamullar, \"to talk\"" },
+  { "id": "yeta", "word": "yeta", "meaning": "bad luck, a jinx", "etymology": "Neapolitan jettatura, \"evil eye\"" },
+  { "id": "mina", "word": "mina", "meaning": "woman", "etymology": "Italian underworld slang mina, \"woman\"" },
+  { "id": "fané", "word": "fané", "meaning": "faded, worn out", "etymology": "French fané, \"wilted\"" },
+  { "id": "morfar", "word": "morfar", "meaning": "to eat", "etymology": "French argot morfer, \"to eat\"" },
+  { "id": "mufa", "word": "mufa", "meaning": "a bad mood, gloom", "etymology": "Italian muffa, \"mould\"" },
+  { "id": "bacán", "word": "bacán", "meaning": "a rich man who keeps a lover", "etymology": "Genoese baccan, \"master of the house\"" },
+  { "id": "pibe", "word": "pibe", "meaning": "a kid; piba, a young woman", "etymology": "Genoese pivetto, \"boy\"" },
+  { "id": "linyera", "word": "linyera", "meaning": "a tramp, a drifter", "etymology": "Lombard lingera, \"vagrant\"" }
+]

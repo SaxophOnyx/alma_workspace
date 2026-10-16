@@ -17,6 +17,7 @@ workspace:
   - modules/domain
   - modules/navigation
   - modules/features/home
+  - modules/features/leer
   - modules/features/launch
   - modules/features/onboarding
   - modules/features/respirar
