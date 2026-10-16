@@ -8,7 +8,7 @@ extension AppThemeContextExtension on BuildContext {
     final AppColorsTheme? theme = Theme.of(this).extension<AppColorsTheme>();
     assert(
       theme != null,
-      'AppColorsTheme not found in Theme.extensions. Ensure AppTheme.light()/dark() includes AppColorsTheme.',
+      'AppColorsTheme not found in Theme.extensions. Ensure AppTheme.dark() includes AppColorsTheme.',
     );
     return theme!;
   }
@@ -17,7 +17,7 @@ extension AppThemeContextExtension on BuildContext {
     final AppTextTheme? theme = Theme.of(this).extension<AppTextTheme>();
     assert(
       theme != null,
-      'AppTextTheme not found in Theme.extensions. Ensure AppTheme.light()/dark() includes AppTextTheme.',
+      'AppTextTheme not found in Theme.extensions. Ensure AppTheme.dark() includes AppTextTheme.',
     );
     return theme!;
   }

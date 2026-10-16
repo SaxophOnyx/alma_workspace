@@ -3,30 +3,44 @@ import 'package:flutter/material.dart';
 import '../raw/app_colors.dart';
 
 final class AppColorsTheme extends ThemeExtension<AppColorsTheme> {
-  final Color primary;
+  final Color background;
+  final Color textPrimary;
+  final Color textSecondary;
+  final Color accent;
+  final Color signal;
 
   const AppColorsTheme({
-    required this.primary,
+    required this.background,
+    required this.textPrimary,
+    required this.textSecondary,
+    required this.accent,
+    required this.signal,
   });
-
-  factory AppColorsTheme.light() {
-    return const AppColorsTheme(
-      primary: AppColors.luridRed,
-    );
-  }
 
   factory AppColorsTheme.dark() {
     return const AppColorsTheme(
-      primary: AppColors.luridRed,
+      background: AppColors.negro,
+      textPrimary: AppColors.crema,
+      textSecondary: AppColors.humo,
+      accent: AppColors.oro,
+      signal: AppColors.carmin,
     );
   }
 
   @override
   AppColorsTheme copyWith({
-    Color? primary,
+    Color? background,
+    Color? textPrimary,
+    Color? textSecondary,
+    Color? accent,
+    Color? signal,
   }) {
     return AppColorsTheme(
-      primary: primary ?? this.primary,
+      background: background ?? this.background,
+      textPrimary: textPrimary ?? this.textPrimary,
+      textSecondary: textSecondary ?? this.textSecondary,
+      accent: accent ?? this.accent,
+      signal: signal ?? this.signal,
     );
   }
 
@@ -40,7 +54,11 @@ final class AppColorsTheme extends ThemeExtension<AppColorsTheme> {
     }
 
     return AppColorsTheme(
-      primary: Color.lerp(primary, other.primary, t)!,
+      background: Color.lerp(background, other.background, t)!,
+      textPrimary: Color.lerp(textPrimary, other.textPrimary, t)!,
+      textSecondary: Color.lerp(textSecondary, other.textSecondary, t)!,
+      accent: Color.lerp(accent, other.accent, t)!,
+      signal: Color.lerp(signal, other.signal, t)!,
     );
   }
 }

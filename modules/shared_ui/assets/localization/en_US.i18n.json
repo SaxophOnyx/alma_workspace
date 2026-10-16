@@ -1,4 +1,8 @@
 {
+  "common": {
+    "back": "Back",
+    "backArrow": "←"
+  },
   "home": {
     "title": "Home",
     "subtitle": "This is your home page!"
