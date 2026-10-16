@@ -37,12 +37,22 @@ class HablarQuizContent extends StatelessWidget {
 
           final Widget child;
           if (message != null) {
-            child = AppText(
-              text: message,
-              style: context.appTexts.body,
-              maxLines: null,
-              textAlign: TextAlign.center,
-              color: context.appColors.textSecondary,
+            child = Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                AppText(
+                  text: message,
+                  style: context.appTexts.body,
+                  maxLines: null,
+                  textAlign: TextAlign.center,
+                  color: context.appColors.textSecondary,
+                ),
+                const SizedBox(height: AppDimens.gapL),
+                AppTextButton(
+                  text: t.hablar.quiz.backToHablar,
+                  onPressed: () => bloc.add(const BackToHablarPressed()),
+                ),
+              ],
             );
           } else if (state.phase == QuizPhase.result || question == null) {
             child = QuizResult(

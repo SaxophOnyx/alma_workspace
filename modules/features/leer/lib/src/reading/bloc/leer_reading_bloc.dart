@@ -14,23 +14,31 @@ part 'leer_reading_state.dart';
 class LeerReadingBloc extends Bloc<LeerReadingEvent, LeerReadingState> {
   final String _textId;
   final GetTextUseCase _getTextUseCase;
+  final MarkWordEncounteredUseCase _markWordEncounteredUseCase;
   final LeerNavigator _navigator;
   final Duration _stanzaPauseDuration;
   final Duration _endSilenceDuration;
+
+  /// The outgoing line fades out before a silence; the silence itself starts once the screen is black.
+  final Duration _lineFadeDuration;
 
   Timer? _silenceTimer;
 
   LeerReadingBloc({
     required String textId,
     required GetTextUseCase getTextUseCase,
+    required MarkWordEncounteredUseCase markWordEncounteredUseCase,
     required LeerNavigator navigator,
     Duration stanzaPauseDuration = AppMotions.silenceStanza,
     Duration endSilenceDuration = AppMotions.silenceLong,
+    Duration lineFadeDuration = AppMotions.durationShort,
   }) : _textId = textId,
        _getTextUseCase = getTextUseCase,
+       _markWordEncounteredUseCase = markWordEncounteredUseCase,
        _navigator = navigator,
        _stanzaPauseDuration = stanzaPauseDuration,
        _endSilenceDuration = endSilenceDuration,
+       _lineFadeDuration = lineFadeDuration,
        super(const LeerReadingState()) {
     on<ReadingStarted>(_onStarted);
     on<ScreenTapped>(_onScreenTapped);
@@ -50,6 +58,7 @@ class LeerReadingBloc extends Bloc<LeerReadingEvent, LeerReadingState> {
       final TangoText text = await _getTextUseCase.execute(GetTextParams(textId: _textId));
       if (isClosed) return;
       emit(state.copyWith(isLoading: false, text: text, stanzaIndex: 0, lineIndex: 0, phase: ReadingPhase.line));
+      _markCurrentLineEncountered();
     } on Exception catch (e) {
       if (isClosed) return;
       emit(state.copyWith(isLoading: false, text: null, error: e));
@@ -63,22 +72,24 @@ class LeerReadingBloc extends Bloc<LeerReadingEvent, LeerReadingState> {
     final List<TextLine> lines = text.stanzas[state.stanzaIndex].lines;
     if (state.lineIndex + 1 < lines.length) {
       emit(state.copyWith(lineIndex: state.lineIndex + 1));
+      _markCurrentLineEncountered();
       return;
     }
 
     if (state.stanzaIndex + 1 < text.stanzas.length) {
       emit(state.copyWith(phase: ReadingPhase.stanzaPause));
-      _startSilence(_stanzaPauseDuration, const _StanzaPauseCompleted());
+      _startSilence(_stanzaPauseDuration + _lineFadeDuration, const _StanzaPauseCompleted());
       return;
     }
 
     emit(state.copyWith(phase: ReadingPhase.endSilence));
-    _startSilence(_endSilenceDuration, const _EndSilenceCompleted());
+    _startSilence(_endSilenceDuration + _lineFadeDuration, const _EndSilenceCompleted());
   }
 
   void _onStanzaPauseCompleted(_StanzaPauseCompleted event, Emitter<LeerReadingState> emit) {
     if (state.phase != ReadingPhase.stanzaPause) return;
     emit(state.copyWith(stanzaIndex: state.stanzaIndex + 1, lineIndex: 0, phase: ReadingPhase.line));
+    _markCurrentLineEncountered();
   }
 
   void _onEndSilenceCompleted(_EndSilenceCompleted event, Emitter<LeerReadingState> emit) {
@@ -132,6 +143,29 @@ class LeerReadingBloc extends Bloc<LeerReadingEvent, LeerReadingState> {
     if (isClosed) return;
 
     emit(state.copyWith(isNavigating: false));
+  }
+
+  /// Fire and forget so reading never waits on storage. Words go one at a time: the use case reads before it
+  /// writes, so parallel calls could drop one.
+  void _markCurrentLineEncountered() {
+    final TextLine? line = state.currentLine;
+    if (line == null) return;
+
+    final List<String> wordIds = <String>[
+      for (final TextSegment segment in line.segments)
+        if (segment.wordId case final String wordId) wordId,
+    ];
+    if (wordIds.isEmpty) return;
+
+    unawaited(() async {
+      for (final String wordId in wordIds) {
+        try {
+          await _markWordEncounteredUseCase.execute(MarkWordEncounteredParams(wordId: wordId));
+        } on Exception catch (_) {
+          // Best effort: a missed encounter only narrows the quiz pool.
+        }
+      }
+    }());
   }
 
   void _startSilence(Duration duration, LeerReadingEvent completion) {

@@ -11,11 +11,15 @@ import 'package:mocktail/mocktail.dart';
 
 class _MockGetTextUseCase extends Mock implements GetTextUseCase {}
 
+class _MockMarkWordEncounteredUseCase extends Mock implements MarkWordEncounteredUseCase {}
+
 class _MockLeerNavigator extends Mock implements LeerNavigator {}
 
-// Mirror the bloc's defaults, AppMotions.silenceStanza and AppMotions.silenceLong (spec: 1 s and 3 s).
-const Duration _stanzaPause = Duration(seconds: 1);
-const Duration _endSilence = Duration(seconds: 3);
+// Mirror the bloc's defaults, AppMotions.silenceStanza and AppMotions.silenceLong (spec: 1 s and 3 s), each starting
+// after AppMotions.durationShort, the fade-out of the outgoing line.
+const Duration _lineFade = Duration(milliseconds: 400);
+final Duration _stanzaPause = const Duration(seconds: 1) + _lineFade;
+final Duration _endSilence = const Duration(seconds: 3) + _lineFade;
 const Duration _justBefore = Duration(milliseconds: 1);
 
 TextLine _line(String text) => TextLine(segments: <TextSegment>[TextSegment(text: text)]);
@@ -35,16 +39,20 @@ final TangoText _text = TangoText(
 
 void main() {
   late _MockGetTextUseCase getText;
+  late _MockMarkWordEncounteredUseCase markWordEncountered;
   late _MockLeerNavigator navigator;
 
   setUpAll(() {
     registerFallbackValue(const GetTextParams(textId: ''));
+    registerFallbackValue(const MarkWordEncounteredParams(wordId: ''));
   });
 
   setUp(() {
     getText = _MockGetTextUseCase();
+    markWordEncountered = _MockMarkWordEncounteredUseCase();
     navigator = _MockLeerNavigator();
     when(() => getText.execute(any())).thenAnswer((_) async => _text);
+    when(() => markWordEncountered.execute(any())).thenAnswer((_) async {});
     when(() => navigator.openWordAnnotation(any())).thenAnswer((_) async {});
     when(() => navigator.openTextList()).thenAnswer((_) async {});
     when(() => navigator.breatheWithText()).thenAnswer((_) async {});
@@ -55,6 +63,7 @@ void main() {
     return LeerReadingBloc(
       textId: 'yira_yira',
       getTextUseCase: getText,
+      markWordEncounteredUseCase: markWordEncountered,
       navigator: navigator,
     );
   }
@@ -271,6 +280,84 @@ void main() {
 
         expect(async.pendingTimers, isEmpty);
         expect(bloc.state.phase, ReadingPhase.stanzaPause);
+      });
+    });
+  });
+
+  group('encountered words', () {
+    /// Two stanzas: [grela line, plain line] and [mina + morfo line].
+    final TangoText lunfardoText = TangoText(
+      id: 'yira_yira',
+      title: 'Yira, yira',
+      author: 'Enrique Santos Discépolo',
+      year: 1930,
+      context: 'context',
+      stanzas: <TextStanza>[
+        TextStanza(
+          lines: <TextLine>[
+            const TextLine(
+              segments: <TextSegment>[
+                TextSegment(text: 'que es '),
+                TextSegment(text: 'grela', wordId: 'grela'),
+              ],
+            ),
+            _line('dos'),
+          ],
+        ),
+        const TextStanza(
+          lines: <TextLine>[
+            TextLine(
+              segments: <TextSegment>[
+                TextSegment(text: 'mina', wordId: 'mina'),
+                TextSegment(text: ' y '),
+                TextSegment(text: 'morfo', wordId: 'morfar'),
+              ],
+            ),
+          ],
+        ),
+      ],
+    );
+
+    Matcher params(String wordId) {
+      return isA<MarkWordEncounteredParams>().having((MarkWordEncounteredParams p) => p.wordId, 'wordId', wordId);
+    }
+
+    test('marks the Lunfardo words of each line as it is shown', () {
+      when(() => getText.execute(any())).thenAnswer((_) async => lunfardoText);
+
+      runReading((FakeAsync async, LeerReadingBloc bloc) {
+        verify(() => markWordEncountered.execute(any(that: params('grela')))).called(1);
+
+        tap(async, bloc);
+        verifyNever(() => markWordEncountered.execute(any()));
+
+        tap(async, bloc);
+        async.elapse(_stanzaPause);
+        verifyInOrder(<void Function()>[
+          () => markWordEncountered.execute(any(that: params('mina'))),
+          () => markWordEncountered.execute(any(that: params('morfar'))),
+        ]);
+      });
+    });
+
+    test('plain lines mark nothing', () {
+      runReading((FakeAsync async, LeerReadingBloc bloc) {
+        tap(async, bloc, times: 2);
+        async.elapse(_stanzaPause);
+
+        verifyNever(() => markWordEncountered.execute(any()));
+      });
+    });
+
+    test('a failed mark does not interrupt reading', () {
+      when(() => getText.execute(any())).thenAnswer((_) async => lunfardoText);
+      when(() => markWordEncountered.execute(any())).thenThrow(const EncounteredWordsWriteException());
+
+      runReading((FakeAsync async, LeerReadingBloc bloc) {
+        tap(async, bloc);
+
+        expect(bloc.state.error, isNull);
+        expectAt(bloc, phase: ReadingPhase.line, line: 1);
       });
     });
   });

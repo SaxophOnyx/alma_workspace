@@ -99,7 +99,16 @@ class HablarWordCardBloc extends Bloc<HablarWordCardEvent, HablarWordCardState> 
     }
     if (isClosed) return;
 
-    emit(state.copyWith(isNavigating: false));
+    // The word may have been added from the annotation popup while reading.
+    bool isInDictionary = state.isInDictionary;
+    try {
+      isInDictionary = await _isWordInDictionaryUseCase.execute(IsWordInDictionaryParams(wordId: word.id));
+    } on Exception catch (_) {
+      // Keep what the card already shows.
+    }
+    if (isClosed) return;
+
+    emit(state.copyWith(isNavigating: false, isInDictionary: isInDictionary));
   }
 
   Future<void> _onBackPressed(WordCardBackPressed event, Emitter<HablarWordCardState> emit) async {

@@ -76,8 +76,7 @@
     "annotation": {
       "add": "Add to my dictionary",
       "inDictionary": "In dictionary",
-      "close": "Close",
-      "etymologySeparator": " → "
+      "close": "Close"
     },
     "end": {
       "anotherText": "Another text",

@@ -23,6 +23,7 @@ class LeerReadingScreen extends StatelessWidget {
         return LeerReadingBloc(
           textId: textId,
           getTextUseCase: context.resolve<GetTextUseCase>(),
+          markWordEncounteredUseCase: context.resolve<MarkWordEncounteredUseCase>(),
           navigator: context.resolve<LeerNavigator>(),
         )..add(const ReadingStarted());
       },

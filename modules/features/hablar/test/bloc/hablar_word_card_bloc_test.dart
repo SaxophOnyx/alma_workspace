@@ -329,6 +329,41 @@ void main() {
     );
 
     blocTest<HablarWordCardBloc, HablarWordCardState>(
+      'shows "In dictionary" on return when the word was added while reading',
+      setUp: () {
+        when(() => isInDictionary.execute(any())).thenAnswer((_) async => true);
+      },
+      build: buildBloc,
+      seed: () => HablarWordCardState(isLoading: false, word: _grela),
+      act: (HablarWordCardBloc bloc) => bloc.add(const OpenTextPressed()),
+      expect: () => <Matcher>[
+        stateWith(isLoading: false, word: _grela, isNavigating: true),
+        stateWith(isLoading: false, word: _grela, isInDictionary: true),
+      ],
+      verify: (_) {
+        verify(
+          () => isInDictionary.execute(
+            any(that: isA<IsWordInDictionaryParams>().having((IsWordInDictionaryParams p) => p.wordId, 'wordId', 'grela')),
+          ),
+        ).called(1);
+      },
+    );
+
+    blocTest<HablarWordCardBloc, HablarWordCardState>(
+      'keeps the shown dictionary state when it cannot be re-read on return',
+      setUp: () {
+        when(() => isInDictionary.execute(any())).thenThrow(const DictionaryReadException());
+      },
+      build: buildBloc,
+      seed: () => HablarWordCardState(isLoading: false, word: _grela),
+      act: (HablarWordCardBloc bloc) => bloc.add(const OpenTextPressed()),
+      expect: () => <Matcher>[
+        stateWith(isLoading: false, word: _grela, isNavigating: true),
+        stateWith(isLoading: false, word: _grela),
+      ],
+    );
+
+    blocTest<HablarWordCardBloc, HablarWordCardState>(
       'stays usable when navigation fails',
       setUp: () {
         when(() => navigator.openText(any())).thenThrow(Exception('boom'));

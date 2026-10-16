@@ -58,12 +58,13 @@ class WordAnnotationCard extends StatelessWidget {
                   color: colors.textPrimary,
                 ),
                 const SizedBox(height: AppDimens.gapXs),
-                AppText(
-                  text: word.etymology.join(t.leer.annotation.etymologySeparator),
-                  style: texts.caption,
-                  maxLines: null,
-                  color: colors.textSecondary,
-                ),
+                if (word.etymology.isNotEmpty)
+                  // One line only (US 12.1); the word card in Hablar shows the whole chain.
+                  AppText(
+                    text: word.etymology.first,
+                    style: texts.caption,
+                    color: colors.textSecondary,
+                  ),
                 const SizedBox(height: AppDimens.gapL),
                 AppTextButton(
                   text: isInDictionary ? t.leer.annotation.inDictionary : t.leer.annotation.add,

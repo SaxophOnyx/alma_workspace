@@ -55,7 +55,7 @@ class AppTextButton extends StatelessWidget {
         }),
         overlayColor: const WidgetStatePropertyAll<Color>(Colors.transparent),
         splashFactory: NoSplash.splashFactory,
-        animationDuration: AppMotions.durationShort,
+        animationDuration: AppMotions.durationHighlight,
         textStyle: WidgetStatePropertyAll<TextStyle>(textStyle),
         minimumSize: const WidgetStatePropertyAll<Size>(
           Size(AppDimens.minTouchTarget, AppDimens.minTouchTarget),

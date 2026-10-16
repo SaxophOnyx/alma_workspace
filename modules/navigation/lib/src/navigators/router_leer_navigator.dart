@@ -1,6 +1,5 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:domain/domain.dart';
-import 'package:flutter/widgets.dart';
 import 'package:leer/leer.dart';
 import 'package:respirar/respirar.dart';
 
@@ -8,8 +7,6 @@ import '../router/app_router.dart';
 
 final class RouterLeerNavigator implements LeerNavigator {
   final AppRouter _appRouter;
-
-  static final Set<String> _leerRouteNames = LeerRouter().routes.map((AutoRoute route) => route.name).toSet();
 
   const RouterLeerNavigator({
     required AppRouter appRouter,
@@ -43,8 +40,9 @@ final class RouterLeerNavigator implements LeerNavigator {
       return;
     }
 
-    // Leer was entered from another module straight into a text: swap the Leer screens for the list.
-    _appRouter.popUntil((Route<dynamic> route) => !_leerRouteNames.contains(route.settings.name));
+    // Leer was entered from another module straight into a text: the list sits on the main screen, so back from it
+    // leads home like any other text list.
+    _appRouter.popUntilRoot();
     await _appRouter.push<void>(const LeerTextListRoute());
   }
 
