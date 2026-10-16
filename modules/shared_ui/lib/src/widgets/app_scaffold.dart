@@ -26,19 +26,23 @@ class AppScaffold extends StatelessWidget {
       child: Scaffold(
         backgroundColor: colors.background,
         body: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(AppDimens.screenPadding),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                if (onBack != null)
-                  Align(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              if (onBack != null)
+                Padding(
+                  padding: const EdgeInsets.only(
+                    left: AppDimens.screenPadding,
+                    top: AppDimens.screenPadding,
+                    right: AppDimens.screenPadding,
+                  ),
+                  child: Align(
                     alignment: Alignment.centerLeft,
                     child: AppBackButton(onPressed: onBack),
                   ),
-                Expanded(child: body),
-              ],
-            ),
+                ),
+              Expanded(child: body),
+            ],
           ),
         ),
       ),

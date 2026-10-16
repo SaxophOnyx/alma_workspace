@@ -12,6 +12,8 @@ dependencies:
   
   core: any
   home: any
+  launch: any
+  onboarding: any
   shared_ui: any
   
   auto_route: ^11.1.0

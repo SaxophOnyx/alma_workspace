@@ -14,13 +14,16 @@ START_TIME=$(date +%s)
 
 FAILED=0
 
-for package in modules/domain modules/data; do
+for entry in "modules/domain:dart" "modules/data:flutter"; do
+    package=${entry%%:*}
+    runner=${entry##*:}
+
     if [ -z "$(find "$package/test" -name '*_test.dart' -print -quit 2>/dev/null)" ]; then
         echo "No tests found in $package, skipping."
         continue
     fi
 
-    (cd "$package" && dart test) || FAILED=1
+    (cd "$package" && "$runner" test) || FAILED=1
 done
 
 END_TIME=$(date +%s)

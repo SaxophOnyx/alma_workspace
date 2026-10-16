@@ -1,5 +1,7 @@
 import 'package:core/core.dart';
 import 'package:home/home.dart';
+import 'package:launch/launch.dart';
+import 'package:onboarding/onboarding.dart';
 
 import '../navigators/navigators.dart';
 import '../router/app_router.dart';
@@ -19,6 +21,12 @@ final class NavigationDI {
   static void _initNavigators(GetIt locator) {
     locator.registerLazySingleton<HomeNavigator>(
       () => RouterHomeNavigator(appRouter: locator<AppRouter>()),
+    );
+    locator.registerLazySingleton<LaunchNavigator>(
+      () => RouterLaunchNavigator(appRouter: locator<AppRouter>()),
+    );
+    locator.registerLazySingleton<OnboardingNavigator>(
+      () => RouterOnboardingNavigator(appRouter: locator<AppRouter>()),
     );
   }
 }

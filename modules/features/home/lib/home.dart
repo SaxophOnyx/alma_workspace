@@ -10,7 +10,6 @@ class HomeRouter extends RootStackRouter {
   @override
   List<AutoRoute> get routes => <AutoRoute>[
     AutoRoute(
-      initial: true,
       page: HomeRoute.page,
     ),
   ];

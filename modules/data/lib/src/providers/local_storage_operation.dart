@@ -1,0 +1,4 @@
+enum LocalStorageOperation {
+  read,
+  write,
+}

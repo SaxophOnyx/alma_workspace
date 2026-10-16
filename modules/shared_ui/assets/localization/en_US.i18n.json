@@ -6,5 +6,32 @@
   "home": {
     "title": "Home",
     "subtitle": "This is your home page!"
+  },
+  "onboarding": {
+    "skip": "Skip",
+    "intro": {
+      "title": "Alma",
+      "line1": "A quiet room in a city of words.",
+      "line2": "Nothing here will hurry you.",
+      "line3": "You breathe, you listen, you answer.",
+      "line4": "The city will wait for you."
+    },
+    "paths": {
+      "breatheTitle": "Respirar",
+      "breatheSubtitle": "Slow, steady breath",
+      "speakTitle": "Hablar",
+      "speakSubtitle": "Speak to the city",
+      "readTitle": "Leer",
+      "readSubtitle": "Stories in whispers"
+    },
+    "principles": {
+      "noAccount": "No account.",
+      "noInternet": "No internet.",
+      "noNotifications": "No notifications.",
+      "closing": "Just you, the dark, and a city that whispers."
+    },
+    "entry": {
+      "enter": "Enter"
+    }
   }
 }
