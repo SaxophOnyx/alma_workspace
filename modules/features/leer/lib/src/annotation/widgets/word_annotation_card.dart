@@ -59,7 +59,7 @@ class WordAnnotationCard extends StatelessWidget {
                 ),
                 const SizedBox(height: AppDimens.gapXs),
                 AppText(
-                  text: word.etymology,
+                  text: word.etymology.join(t.leer.annotation.etymologySeparator),
                   style: texts.caption,
                   maxLines: null,
                   color: colors.textSecondary,

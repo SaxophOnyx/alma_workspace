@@ -25,6 +25,7 @@ class LeerWordAnnotationScreen extends StatelessWidget {
           getLunfardoWordUseCase: context.resolve<GetLunfardoWordUseCase>(),
           isWordInDictionaryUseCase: context.resolve<IsWordInDictionaryUseCase>(),
           addWordToDictionaryUseCase: context.resolve<AddWordToDictionaryUseCase>(),
+          markWordEncounteredUseCase: context.resolve<MarkWordEncounteredUseCase>(),
           navigator: context.resolve<LeerNavigator>(),
         )..add(const AnnotationStarted());
       },

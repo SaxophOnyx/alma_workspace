@@ -85,4 +85,18 @@ void main() {
 
     expect(quotes.map((Quote q) => q.textId).toSet().difference(textIds), isEmpty);
   });
+
+  test('every word example links to a bundled text with a matching title and year', () async {
+    final List<LunfardoWord> words = await LocalLunfardoWordRepository(contentProvider: provider).getWords();
+    final Map<String, TangoText> textsById = <String, TangoText>{
+      for (final TangoText text in await LocalTextRepository(contentProvider: provider).getTexts()) text.id: text,
+    };
+
+    for (final LunfardoWord word in words) {
+      final TangoText? text = textsById[word.example.textId];
+      expect(text, isNotNull, reason: word.id);
+      expect(word.example.title, text!.title, reason: word.id);
+      expect(word.example.year, text.year, reason: word.id);
+    }
+  });
 }

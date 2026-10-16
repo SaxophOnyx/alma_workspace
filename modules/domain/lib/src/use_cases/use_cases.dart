@@ -1,12 +1,16 @@
 export 'add_word_to_dictionary_use_case.dart';
 export 'complete_onboarding_use_case.dart';
+export 'create_quiz_use_case.dart';
 export 'get_breathing_pattern_use_case.dart';
 export 'get_lunfardo_word_use_case.dart';
 export 'get_onboarding_completed_use_case.dart';
+export 'get_personal_dictionary_use_case.dart';
 export 'get_random_quote_use_case.dart';
 export 'get_text_use_case.dart';
 export 'get_texts_use_case.dart';
+export 'get_word_of_the_day_use_case.dart';
 export 'is_word_in_dictionary_use_case.dart';
+export 'mark_word_encountered_use_case.dart';
 export 'play_phase_haptic_use_case.dart';
 export 'set_screen_awake_use_case.dart';
 export 'template_use_cases.dart';

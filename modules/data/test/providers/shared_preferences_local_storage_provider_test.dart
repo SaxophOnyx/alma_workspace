@@ -10,6 +10,7 @@ class _MockSharedPreferencesAsync extends Mock implements SharedPreferencesAsync
 
 const String _key = 'some_flag';
 const String _listKey = 'some_list';
+const String _stringKey = 'some_string';
 
 void main() {
   group('with in-memory storage', () {
@@ -169,6 +170,90 @@ void main() {
       await provider.setStringList(_listKey, <String>['grela']);
 
       verify(() => preferences.setStringList(_listKey, <String>['grela'])).called(1);
+      verifyNoMoreInteractions(preferences);
+    });
+  });
+
+  group('strings with in-memory storage', () {
+    late SharedPreferencesLocalStorageProvider provider;
+
+    setUp(() {
+      SharedPreferencesAsyncPlatform.instance = InMemorySharedPreferencesAsync.empty();
+      provider = SharedPreferencesLocalStorageProvider(preferences: SharedPreferencesAsync());
+    });
+
+    test('getString returns null for a key that was never written', () async {
+      expect(await provider.getString(_stringKey), isNull);
+    });
+
+    test('setString then getString round-trips the value', () async {
+      await provider.setString(_stringKey, 'grela');
+
+      expect(await provider.getString(_stringKey), 'grela');
+    });
+
+    test('setString overwrites a previous value', () async {
+      await provider.setString(_stringKey, 'grela');
+      await provider.setString(_stringKey, '');
+
+      expect(await provider.getString(_stringKey), isEmpty);
+    });
+  });
+
+  group('string error mapping', () {
+    late _MockSharedPreferencesAsync preferences;
+    late SharedPreferencesLocalStorageProvider provider;
+
+    setUp(() {
+      preferences = _MockSharedPreferencesAsync();
+      provider = SharedPreferencesLocalStorageProvider(preferences: preferences);
+    });
+
+    test('getString maps PlatformException to a read LocalStorageException', () async {
+      when(() => preferences.getString(_stringKey)).thenThrow(PlatformException(code: 'error'));
+
+      await expectLater(
+        provider.getString(_stringKey),
+        throwsA(isA<LocalStorageException>().having(
+          (LocalStorageException e) => e.operation,
+          'operation',
+          LocalStorageOperation.read,
+        )),
+      );
+    });
+
+    test('getString maps an unexpected exception to a read LocalStorageException', () async {
+      when(() => preferences.getString(_stringKey)).thenThrow(Exception('boom'));
+
+      await expectLater(
+        provider.getString(_stringKey),
+        throwsA(isA<LocalStorageException>().having(
+          (LocalStorageException e) => e.operation,
+          'operation',
+          LocalStorageOperation.read,
+        )),
+      );
+    });
+
+    test('setString maps PlatformException to a write LocalStorageException', () async {
+      when(() => preferences.setString(_stringKey, 'grela')).thenThrow(PlatformException(code: 'error'));
+
+      await expectLater(
+        provider.setString(_stringKey, 'grela'),
+        throwsA(isA<LocalStorageException>().having(
+          (LocalStorageException e) => e.operation,
+          'operation',
+          LocalStorageOperation.write,
+        )),
+      );
+    });
+
+    test('setString passes the exact key and value to storage', () async {
+      when(() => preferences.setString(_stringKey, 'grela')).thenAnswer((_) async {});
+
+      await provider.setString(_stringKey, 'grela');
+
+      verify(() => preferences.setString(_stringKey, 'grela')).called(1);
       verifyNoMoreInteractions(preferences);
     });
   });

@@ -16,6 +16,7 @@ workspace:
   - modules/data
   - modules/domain
   - modules/navigation
+  - modules/features/hablar
   - modules/features/home
   - modules/features/leer
   - modules/features/launch

@@ -1,4 +1,5 @@
 import 'package:core/core.dart';
+import 'package:hablar/hablar.dart';
 import 'package:home/home.dart';
 import 'package:launch/launch.dart';
 import 'package:leer/leer.dart';
@@ -32,6 +33,9 @@ final class NavigationDI {
     );
     locator.registerLazySingleton<RespirarNavigator>(
       () => RouterRespirarNavigator(appRouter: locator<AppRouter>()),
+    );
+    locator.registerLazySingleton<HablarNavigator>(
+      () => RouterHablarNavigator(appRouter: locator<AppRouter>()),
     );
     locator.registerLazySingleton<LeerNavigator>(
       () => RouterLeerNavigator(appRouter: locator<AppRouter>()),

@@ -12,6 +12,7 @@ dependencies:
   
   core: any
   domain: any
+  hablar: any
   home: any
   launch: any
   leer: any

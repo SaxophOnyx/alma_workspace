@@ -11,6 +11,16 @@ const String _quotesKey = 'packages/data/assets/content/quotes.json';
 const String _textsKey = 'packages/data/assets/content/texts.json';
 const String _wordsKey = 'packages/data/assets/content/lunfardo_words.json';
 
+/// One-word JSON array; each argument is raw JSON for that field.
+String _wordJson({
+  String word = '"grela"',
+  String etymology = '["Italian grilla", "Lunfardo: fickle fate"]',
+  String example = '{"line": "que es {grela}, te deja", "title": "Yira, yira", "year": 1930, "textId": "yira_yira"}',
+}) {
+  return '[{"id": "grela", "word": $word, "pronunciation": "/\'ɣɾe.la/", "meaning": "fickle fate", '
+      '"etymology": $etymology, "example": $example, "related": ["suerte", "yeta"]}]';
+}
+
 void main() {
   late _MockAssetBundle bundle;
   late AssetContentProvider provider;
@@ -190,7 +200,7 @@ void main() {
   group('loadLunfardoWords', () {
     test('parses words', () async {
       when(() => bundle.loadString(_wordsKey)).thenAnswer(
-        (_) async => '[{"id": "grela", "word": "grela", "meaning": "fickle fate", "etymology": "Italian grilla"}]',
+        (_) async => _wordJson(),
       );
 
       final List<LunfardoWordEntity> words = await provider.loadLunfardoWords();
@@ -198,7 +208,13 @@ void main() {
       expect(words.single.id, 'grela');
       expect(words.single.word, 'grela');
       expect(words.single.meaning, 'fickle fate');
-      expect(words.single.etymology, 'Italian grilla');
+      expect(words.single.pronunciation, "/'ɣɾe.la/");
+      expect(words.single.etymology, <String>['Italian grilla', 'Lunfardo: fickle fate']);
+      expect(words.single.example.line, 'que es {grela}, te deja');
+      expect(words.single.example.title, 'Yira, yira');
+      expect(words.single.example.year, 1930);
+      expect(words.single.example.textId, 'yira_yira');
+      expect(words.single.related, <String>['suerte', 'yeta']);
     });
 
     test('returns an empty list for an empty array', () async {
@@ -215,7 +231,23 @@ void main() {
 
     test('throws ContentLoadException when a required field is null', () async {
       when(() => bundle.loadString(_wordsKey)).thenAnswer(
-        (_) async => '[{"id": "grela", "word": null, "meaning": "fickle fate", "etymology": "Italian grilla"}]',
+        (_) async => _wordJson(word: 'null'),
+      );
+
+      await expectLater(provider.loadLunfardoWords(), contentLoadException(ContentType.lunfardoWords));
+    });
+
+    test('throws ContentLoadException when the example is missing', () async {
+      when(() => bundle.loadString(_wordsKey)).thenAnswer(
+        (_) async => _wordJson(example: 'null'),
+      );
+
+      await expectLater(provider.loadLunfardoWords(), contentLoadException(ContentType.lunfardoWords));
+    });
+
+    test('throws ContentLoadException when the etymology is a string instead of a chain', () async {
+      when(() => bundle.loadString(_wordsKey)).thenAnswer(
+        (_) async => _wordJson(etymology: '"Italian grilla"'),
       );
 
       await expectLater(provider.loadLunfardoWords(), contentLoadException(ContentType.lunfardoWords));

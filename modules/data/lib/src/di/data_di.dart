@@ -58,6 +58,16 @@ final class DataDI {
         localStorageProvider: locator<LocalStorageProvider>(),
       ),
     );
+    locator.registerLazySingleton<EncounteredWordsRepository>(
+      () => LocalEncounteredWordsRepository(
+        localStorageProvider: locator<LocalStorageProvider>(),
+      ),
+    );
+    locator.registerLazySingleton<WordOfTheDayRepository>(
+      () => LocalWordOfTheDayRepository(
+        localStorageProvider: locator<LocalStorageProvider>(),
+      ),
+    );
   }
 
   static void _initServices(GetIt locator) {

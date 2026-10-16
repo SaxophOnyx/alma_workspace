@@ -1,3 +1,4 @@
+import 'package:hablar/hablar.dart';
 import 'package:home/home.dart';
 import 'package:leer/leer.dart';
 import 'package:respirar/respirar.dart';
@@ -17,8 +18,8 @@ final class RouterHomeNavigator implements HomeNavigator {
   }
 
   @override
-  Future<void> openHablar() async {
-    // TODO(hablar): open the Hablar module once it exists.
+  Future<void> openHablar() {
+    return _appRouter.push(const HablarMainRoute());
   }
 
   @override

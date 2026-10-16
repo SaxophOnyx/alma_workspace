@@ -6,9 +6,21 @@ import 'package:mocktail/mocktail.dart';
 
 class _MockContentProvider extends Mock implements ContentProvider {}
 
-const List<LunfardoWordEntity> _entities = <LunfardoWordEntity>[
-  LunfardoWordEntity(id: 'grela', word: 'grela', meaning: 'fickle fate', etymology: 'Italian grilla'),
-  LunfardoWordEntity(id: 'mina', word: 'mina', meaning: 'woman', etymology: 'Italian mina'),
+LunfardoWordEntity _entity(String id, {String? meaning}) {
+  return LunfardoWordEntity(
+    id: id,
+    word: id,
+    pronunciation: '/$id/',
+    meaning: meaning ?? 'meaning of $id',
+    etymology: <String>['origin of $id'],
+    example: WordExampleEntity(line: 'y la {$id} se fue', title: 'Yira, yira', year: 1930, textId: 'yira_yira'),
+    related: const <String>[],
+  );
+}
+
+final List<LunfardoWordEntity> _entities = <LunfardoWordEntity>[
+  _entity('grela', meaning: 'fickle fate'),
+  _entity('mina', meaning: 'woman'),
 ];
 
 void main() {
@@ -56,9 +68,7 @@ void main() {
 
     test('maps malformed content to LunfardoWordLoadException', () async {
       when(() => provider.loadLunfardoWords()).thenAnswer(
-        (_) async => const <LunfardoWordEntity>[
-          LunfardoWordEntity(id: '', word: 'grela', meaning: 'fickle fate', etymology: 'Italian grilla'),
-        ],
+        (_) async => <LunfardoWordEntity>[_entity('')],
       );
 
       await expectLater(repository.getWords(), throwsA(isA<LunfardoWordLoadException>()));

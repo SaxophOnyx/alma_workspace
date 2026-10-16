@@ -15,11 +15,21 @@ class _MockAddWordToDictionaryUseCase extends Mock implements AddWordToDictionar
 
 class _MockLeerNavigator extends Mock implements LeerNavigator {}
 
+class _MockMarkWordEncounteredUseCase extends Mock implements MarkWordEncounteredUseCase {}
+
 const LunfardoWord _grela = LunfardoWord(
   id: 'grela',
   word: 'grela',
+  pronunciation: '/ˈɣɾe.la/',
   meaning: 'fickle fate',
-  etymology: 'Italian grilla',
+  etymology: <String>['Italian grilla'],
+  example: WordExample(
+    line: TextLine(segments: <TextSegment>[TextSegment(text: 'grela', wordId: 'grela')]),
+    title: 'Yira, yira',
+    year: 1930,
+    textId: 'yira_yira',
+  ),
+  related: <String>[],
 );
 
 void main() {
@@ -27,11 +37,13 @@ void main() {
   late _MockIsWordInDictionaryUseCase isInDictionary;
   late _MockAddWordToDictionaryUseCase addWord;
   late _MockLeerNavigator navigator;
+  late _MockMarkWordEncounteredUseCase markEncountered;
 
   setUpAll(() {
     registerFallbackValue(const GetLunfardoWordParams(wordId: ''));
     registerFallbackValue(const IsWordInDictionaryParams(wordId: ''));
     registerFallbackValue(const AddWordToDictionaryParams(wordId: ''));
+    registerFallbackValue(const MarkWordEncounteredParams(wordId: ''));
   });
 
   setUp(() {
@@ -39,6 +51,8 @@ void main() {
     isInDictionary = _MockIsWordInDictionaryUseCase();
     addWord = _MockAddWordToDictionaryUseCase();
     navigator = _MockLeerNavigator();
+    markEncountered = _MockMarkWordEncounteredUseCase();
+    when(() => markEncountered.execute(any())).thenAnswer((_) async {});
     when(() => getWord.execute(any())).thenAnswer((_) async => _grela);
     when(() => isInDictionary.execute(any())).thenAnswer((_) async => false);
     when(() => addWord.execute(any())).thenAnswer((_) async {});
@@ -51,6 +65,7 @@ void main() {
       getLunfardoWordUseCase: getWord,
       isWordInDictionaryUseCase: isInDictionary,
       addWordToDictionaryUseCase: addWord,
+      markWordEncounteredUseCase: markEncountered,
       navigator: navigator,
     );
   }
@@ -150,6 +165,52 @@ void main() {
       verifyNever(() => isInDictionary.execute(any()));
       await subscription.cancel();
     });
+  });
+
+  group('AnnotationStarted encounter tracking', () {
+    blocTest<LeerWordAnnotationBloc, LeerWordAnnotationState>(
+      'records the word as encountered once it loads',
+      build: buildBloc,
+      act: (LeerWordAnnotationBloc bloc) => bloc.add(const AnnotationStarted()),
+      verify: (_) {
+        verify(
+          () => markEncountered.execute(
+            any(
+              that: isA<MarkWordEncounteredParams>().having(
+                (MarkWordEncounteredParams p) => p.wordId,
+                'wordId',
+                'grela',
+              ),
+            ),
+          ),
+        ).called(1);
+      },
+    );
+
+    blocTest<LeerWordAnnotationBloc, LeerWordAnnotationState>(
+      'still shows the word when the encounter cannot be recorded',
+      setUp: () {
+        when(() => markEncountered.execute(any())).thenThrow(const EncounteredWordsWriteException());
+      },
+      build: buildBloc,
+      act: (LeerWordAnnotationBloc bloc) => bloc.add(const AnnotationStarted()),
+      expect: () => <Matcher>[
+        stateWith(isLoading: true),
+        stateWith(isLoading: false, word: _grela),
+      ],
+    );
+
+    blocTest<LeerWordAnnotationBloc, LeerWordAnnotationState>(
+      'does not record an encounter when the word cannot be loaded',
+      setUp: () {
+        when(() => getWord.execute(any())).thenThrow(const LunfardoWordNotFoundException());
+      },
+      build: buildBloc,
+      act: (LeerWordAnnotationBloc bloc) => bloc.add(const AnnotationStarted()),
+      verify: (_) {
+        verifyNever(() => markEncountered.execute(any()));
+      },
+    );
   });
 
   group('AddPressed', () {

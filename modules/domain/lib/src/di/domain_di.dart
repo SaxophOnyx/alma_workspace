@@ -57,6 +57,30 @@ final class DomainDI {
         dictionaryRepository: locator<DictionaryRepository>(),
       ),
     );
+    locator.registerLazySingleton<GetWordOfTheDayUseCase>(
+      () => GetWordOfTheDayUseCase(
+        lunfardoWordRepository: locator<LunfardoWordRepository>(),
+        wordOfTheDayRepository: locator<WordOfTheDayRepository>(),
+      ),
+    );
+    locator.registerLazySingleton<GetPersonalDictionaryUseCase>(
+      () => GetPersonalDictionaryUseCase(
+        dictionaryRepository: locator<DictionaryRepository>(),
+        lunfardoWordRepository: locator<LunfardoWordRepository>(),
+      ),
+    );
+    locator.registerLazySingleton<MarkWordEncounteredUseCase>(
+      () => MarkWordEncounteredUseCase(
+        encounteredWordsRepository: locator<EncounteredWordsRepository>(),
+      ),
+    );
+    locator.registerLazySingleton<CreateQuizUseCase>(
+      () => CreateQuizUseCase(
+        lunfardoWordRepository: locator<LunfardoWordRepository>(),
+        encounteredWordsRepository: locator<EncounteredWordsRepository>(),
+        dictionaryRepository: locator<DictionaryRepository>(),
+      ),
+    );
     locator.registerLazySingleton<PlayPhaseHapticUseCase>(
       () => PlayPhaseHapticUseCase(
         hapticFeedbackService: locator<HapticFeedbackService>(),

@@ -41,10 +41,11 @@ final class TextMapper {
       throw FormatException('Text has an empty stanza', textId);
     }
 
-    return TextStanza(lines: lines.map(_lineFromMarkup).toList());
+    return TextStanza(lines: lines.map(lineFromMarkup).toList());
   }
 
-  static TextLine _lineFromMarkup(String raw) {
+  /// Parses one raw line; Lunfardo words are marked inline as `{word}` or `{surface|wordId}`.
+  static TextLine lineFromMarkup(String raw) {
     if (raw.trim().isEmpty) {
       throw FormatException('Text line is empty', raw);
     }

@@ -1,6 +1,8 @@
 export 'breathing_pattern_load_exception.dart';
 export 'dictionary_read_exception.dart';
 export 'dictionary_write_exception.dart';
+export 'encountered_words_read_exception.dart';
+export 'encountered_words_write_exception.dart';
 export 'lunfardo_word_load_exception.dart';
 export 'lunfardo_word_not_found_exception.dart';
 export 'onboarding_status_read_exception.dart';
@@ -8,3 +10,5 @@ export 'onboarding_status_write_exception.dart';
 export 'quote_load_exception.dart';
 export 'text_load_exception.dart';
 export 'text_not_found_exception.dart';
+export 'word_of_the_day_read_exception.dart';
+export 'word_of_the_day_write_exception.dart';

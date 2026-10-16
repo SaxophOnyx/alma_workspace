@@ -11,6 +11,7 @@ class LeerWordAnnotationBloc extends Bloc<LeerWordAnnotationEvent, LeerWordAnnot
   final GetLunfardoWordUseCase _getLunfardoWordUseCase;
   final IsWordInDictionaryUseCase _isWordInDictionaryUseCase;
   final AddWordToDictionaryUseCase _addWordToDictionaryUseCase;
+  final MarkWordEncounteredUseCase _markWordEncounteredUseCase;
   final LeerNavigator _navigator;
 
   LeerWordAnnotationBloc({
@@ -18,11 +19,13 @@ class LeerWordAnnotationBloc extends Bloc<LeerWordAnnotationEvent, LeerWordAnnot
     required GetLunfardoWordUseCase getLunfardoWordUseCase,
     required IsWordInDictionaryUseCase isWordInDictionaryUseCase,
     required AddWordToDictionaryUseCase addWordToDictionaryUseCase,
+    required MarkWordEncounteredUseCase markWordEncounteredUseCase,
     required LeerNavigator navigator,
   }) : _wordId = wordId,
        _getLunfardoWordUseCase = getLunfardoWordUseCase,
        _isWordInDictionaryUseCase = isWordInDictionaryUseCase,
        _addWordToDictionaryUseCase = addWordToDictionaryUseCase,
+       _markWordEncounteredUseCase = markWordEncounteredUseCase,
        _navigator = navigator,
        super(const LeerWordAnnotationState()) {
     on<AnnotationStarted>(_onStarted);
@@ -40,6 +43,13 @@ class LeerWordAnnotationBloc extends Bloc<LeerWordAnnotationEvent, LeerWordAnnot
       if (isClosed) return;
       emit(state.copyWith(isLoading: false, word: null, error: e));
       return;
+    }
+    if (isClosed) return;
+
+    try {
+      await _markWordEncounteredUseCase.execute(MarkWordEncounteredParams(wordId: _wordId));
+    } on Exception catch (_) {
+      // Best effort: a missed encounter only narrows the quiz pool.
     }
     if (isClosed) return;
 

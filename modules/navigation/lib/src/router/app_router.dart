@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:hablar/hablar.dart';
 import 'package:home/home.dart';
 import 'package:launch/launch.dart';
 import 'package:leer/leer.dart';
@@ -21,6 +22,7 @@ class AppRouter extends RootStackRouter {
     ...OnboardingRouter().routes,
     ...HomeRouter().routes,
     ...RespirarRouter().routes,
+    ...HablarRouter().routes,
     ...LeerRouter().routes,
   ];
 }

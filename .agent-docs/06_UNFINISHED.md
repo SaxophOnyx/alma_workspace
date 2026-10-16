@@ -11,7 +11,7 @@ tested end to end. It is NOT release content.
 
 Files (in `modules/data/assets/content/`):
   texts.json            3 texts of the planned 20–25
-  lunfardo_words.json   13 words of the planned 160
+  lunfardo_words.json   13 words of the planned 160 (shared with Hablar)
 
 The seed texts use real titles, authors, years and context cards, but the
 verses are PLACEHOLDER lines written in the style of the song (only the
@@ -47,21 +47,41 @@ enforces both.
 
 ### lunfardo_words.json schema
 
-    { "id": "grela", "word": "grela", "meaning": "fickle fate",
-      "etymology": "Italian grilla, \"cricket\"" }
+    { "id": "grela", "word": "grela", "pronunciation": "/ˈɣɾe.la/",
+      "meaning": "fickle fate",
+      "etymology": ["Italian grilla → \"cricket\"", "Lunfardo: \"fickle fate\""],
+      "example": { "line": "Y si un día la suerte,\nque es {grela}, te deja,",
+                   "title": "Yira, yira", "year": 1930, "textId": "yira_yira" },
+      "related": ["suerte", "yeta"] }
 
-This holds only what the Leer annotation popup needs. Hablar (Features 6–9)
-will extend it: pronunciation, full etymology chain, example line with text
-reference, related words.
+`etymology` is the chain, oldest source first; the word card shows one step
+per line. `example.line` uses the same `{word}` / `{surface|wordId}` markup
+as texts.json and must mark the word itself (the quiz blanks it out).
+`related` entries are display strings, not word ids. Every `example.textId`
+must exist in texts.json with the same title and year;
+`bundled_content_test.dart` enforces it.
 
 
-## Leer — Depends on Hablar
+## Hablar — Seed Content Only
 
-  - US 12.2 "the counter in Hablar updates": the word is saved to the shared
-    personal dictionary (`DictionaryRepository`, key `personal_dictionary`),
-    but there is no Hablar screen to show the counter yet.
-  - US 14.4 (word card "Open text") and US 14.5 (map quote) should call the
-    Leer context card, as `RouterRespirarNavigator.openText` does.
+The 13 seed words carry PLACEHOLDER pronunciations, etymology chains, example
+lines and related words, written to exercise the word card and the quiz. The
+example lines come from the placeholder seed verses in texts.json. Before
+release:
+
+  - Write all 160 cards with the philologist consultant (pronunciation,
+    meaning, etymology chain, example line, related words).
+  - Re-pick every example line once the original lyrics replace the seed
+    verses.
+
+
+## Hablar — Not Implemented
+
+  - Buenos Aires Map (Feature 9, Full Release) and its quote → Leer link
+    (US 14.5). The map entry is left off the Hablar main screen
+    (`HablarEntry`). Needs district tagging per word and milestone quotes.
+  - "All words learned" is shown in My Dictionary when every word is saved;
+    with seed content that means 13 words, not 160.
 
 
 ## Leer — Not Implemented

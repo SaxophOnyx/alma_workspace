@@ -167,4 +167,21 @@ void main() {
       expect(() => _segments('que es {grela|gre|la}'), throwsFormatException);
     });
   });
+
+  group('lineFromMarkup', () {
+    test('parses a single line with the same markup rules as text stanzas', () {
+      final TextLine line = TextMapper.lineFromMarkup('Ya no {morfo|morfar} con {grela},');
+
+      expect(line.text, 'Ya no morfo con grela,');
+      expect(line.segments.map((TextSegment s) => s.wordId).toList(), <String?>[null, 'morfar', null, 'grela', null]);
+    });
+
+    test('throws FormatException for a blank line', () {
+      expect(() => TextMapper.lineFromMarkup(' '), throwsFormatException);
+    });
+
+    test('throws FormatException for malformed markup', () {
+      expect(() => TextMapper.lineFromMarkup('que es {grela'), throwsFormatException);
+    });
+  });
 }

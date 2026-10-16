@@ -3,15 +3,12 @@ import 'package:domain/domain.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';
 
+import '../helpers/word_fixtures.dart';
+
 class _MockLunfardoWordRepository extends Mock implements LunfardoWordRepository {}
 
-const LunfardoWord _grela = LunfardoWord(
-  id: 'grela',
-  word: 'grela',
-  meaning: 'fickle fate',
-  etymology: 'Italian grilla',
-);
-const LunfardoWord _mina = LunfardoWord(id: 'mina', word: 'mina', meaning: 'woman', etymology: 'Italian mina');
+final LunfardoWord _grela = buildWord('grela');
+final LunfardoWord _mina = buildWord('mina');
 
 void main() {
   late _MockLunfardoWordRepository repository;

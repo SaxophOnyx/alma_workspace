@@ -28,13 +28,56 @@
       "home": "Home"
     }
   },
+  "hablar": {
+    "title": "Hablar",
+    "entries": {
+      "wordOfTheDay": "Word of the Day",
+      "dictionary": "My Dictionary",
+      "dictionaryWithCount": "My Dictionary ($count)",
+      "quiz": "Quiz"
+    },
+    "card": {
+      "etymology": "Etymology:",
+      "etymologyStep": "→ $step",
+      "example": "Example:",
+      "source": "— $title, $year",
+      "openText": "Open text →",
+      "related": "Related: $words",
+      "relatedSeparator": ", ",
+      "add": "Add to my dictionary",
+      "inDictionary": "In dictionary"
+    },
+    "dictionary": {
+      "empty": "Nothing here yet. Tap a word in a text to begin.",
+      "complete": "Your Lunfardo is complete. $count words."
+    },
+    "quiz": {
+      "meaningPrompt": "What does \"$word\" mean?",
+      "wordPrompt": "Which word means this?",
+      "etymologyPrompt": "Which word comes from this?",
+      "examplePrompt": "Which word completes the line?",
+      "relatedPrompt": "Which word is related to \"$related\"?",
+      "blank": "___",
+      "result": "You recalled $correct out of $total",
+      "tryAgain": "Try again",
+      "backToHablar": "Back to Hablar",
+      "empty": "Meet a few words first: open the word of the day or tap a word in a text."
+    },
+    "errors": {
+      "wordUnavailable": "This word could not be opened.",
+      "dictionaryUnavailable": "Your dictionary is unavailable right now.",
+      "quizUnavailable": "The quiz could not be prepared.",
+      "unknown": "Something went wrong."
+    }
+  },
   "leer": {
     "title": "Leer",
     "read": "Read",
     "annotation": {
       "add": "Add to my dictionary",
       "inDictionary": "In dictionary",
-      "close": "Close"
+      "close": "Close",
+      "etymologySeparator": " → "
     },
     "end": {
       "anotherText": "Another text",
