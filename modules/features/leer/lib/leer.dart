@@ -1,5 +1,4 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/material.dart';
 import 'package:shared_ui/shared_ui.dart';
 
 import 'leer.gr.dart';
@@ -23,10 +22,7 @@ class LeerRouter extends RootStackRouter {
     CustomRoute<void>(
       page: LeerWordAnnotationRoute.page,
       opaque: false,
-      barrierColor: Colors.transparent,
-      transitionsBuilder: AppPageTransitions.fade,
-      duration: AppMotions.durationHighlight,
-      reverseDuration: AppMotions.durationHighlight,
+      customRouteBuilder: AppPageTransitions.overlay,
     ),
   ];
 }

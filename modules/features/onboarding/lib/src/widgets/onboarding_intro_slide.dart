@@ -17,21 +17,27 @@ class OnboardingIntroSlide extends StatelessWidget {
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
-      spacing: AppDimens.gapS,
       children: <Widget>[
-        AppText(
-          text: t.onboarding.intro.title,
-          style: texts.brand,
-          textAlign: TextAlign.center,
-        ),
-        const SizedBox(height: AppDimens.gapL),
-        for (final String line in lines)
-          AppText(
-            text: line,
-            style: texts.poetry,
-            maxLines: null,
+        // The name arrives out of the dark first; the lines follow once it has settled.
+        AppFadeIn(
+          delay: AppMotions.durationMedium,
+          child: AppText(
+            text: t.onboarding.intro.title,
+            style: texts.brand,
             textAlign: TextAlign.center,
           ),
+        ),
+        const SizedBox(height: AppDimens.gapL),
+        AppFadeIn(
+          delay: AppMotions.durationMedium + AppMotions.durationLong + AppMotions.durationShort,
+          child: AppText(
+            text: lines.join('\n'),
+            style: texts.quote,
+            maxLines: null,
+            textAlign: TextAlign.center,
+            color: context.appColors.textSecondary,
+          ),
+        ),
       ],
     );
   }

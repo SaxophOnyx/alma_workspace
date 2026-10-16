@@ -17,6 +17,9 @@ final class AppTextTheme extends ThemeExtension<AppTextTheme> {
   final TextStyle bodyMedium;
   final TextStyle caption;
   final TextStyle captionSmall;
+  final TextStyle display;
+  final TextStyle action;
+  final TextStyle smallCaps;
 
   const AppTextTheme({
     required this.brand,
@@ -33,6 +36,9 @@ final class AppTextTheme extends ThemeExtension<AppTextTheme> {
     required this.bodyMedium,
     required this.caption,
     required this.captionSmall,
+    required this.display,
+    required this.action,
+    required this.smallCaps,
   });
 
   factory AppTextTheme.dark() {
@@ -51,6 +57,9 @@ final class AppTextTheme extends ThemeExtension<AppTextTheme> {
       bodyMedium: AppFonts.sans_15,
       caption: AppFonts.sans_14,
       captionSmall: AppFonts.sans_13,
+      display: AppFonts.serif_44,
+      action: AppFonts.serifItalic_22,
+      smallCaps: AppFonts.serifSmallCaps_17,
     );
   }
 
@@ -70,6 +79,9 @@ final class AppTextTheme extends ThemeExtension<AppTextTheme> {
     TextStyle? bodyMedium,
     TextStyle? caption,
     TextStyle? captionSmall,
+    TextStyle? display,
+    TextStyle? action,
+    TextStyle? smallCaps,
   }) {
     return AppTextTheme(
       brand: brand ?? this.brand,
@@ -86,6 +98,9 @@ final class AppTextTheme extends ThemeExtension<AppTextTheme> {
       bodyMedium: bodyMedium ?? this.bodyMedium,
       caption: caption ?? this.caption,
       captionSmall: captionSmall ?? this.captionSmall,
+      display: display ?? this.display,
+      action: action ?? this.action,
+      smallCaps: smallCaps ?? this.smallCaps,
     );
   }
 
@@ -113,6 +128,9 @@ final class AppTextTheme extends ThemeExtension<AppTextTheme> {
       bodyMedium: TextStyle.lerp(bodyMedium, other.bodyMedium, t)!,
       caption: TextStyle.lerp(caption, other.caption, t)!,
       captionSmall: TextStyle.lerp(captionSmall, other.captionSmall, t)!,
+      display: TextStyle.lerp(display, other.display, t)!,
+      action: TextStyle.lerp(action, other.action, t)!,
+      smallCaps: TextStyle.lerp(smallCaps, other.smallCaps, t)!,
     );
   }
 }

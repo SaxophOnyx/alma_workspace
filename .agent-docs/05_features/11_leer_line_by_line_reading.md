@@ -4,7 +4,12 @@ Priority: MVP
 
 Description:
 The text appears one line at a time. Tap the screen — next line.
+Within a stanza the lines build up: the newest in full Crema, the
+earlier ones dimmed but kept, on a fixed left margin about a third
+down the screen. At a stanza break the whole stanza fades out.
 Between stanzas — one second of empty black screen.
+On the first line a Humo "tap to continue" hint shows at the bottom;
+a row of dots (one per stanza) marks the position.
 Lunfardo words are highlighted with a gold underline.
 
 US 11.1
@@ -14,9 +19,9 @@ so that I can feel the phrasing rhythm and pauses, as in tango.
 
   Given the user pressed "Read" on the context card
   When reading mode is active
-  Then one line of text is on screen
-  And tapping the screen reveals the next line
-       (the previous one fades out)
+  Then the first line of the stanza is on screen
+  And tapping the screen reveals the next line below it
+       (the previous lines dim to 40% and stay)
   And the transition between lines is a fade, 400ms
 
 US 11.2

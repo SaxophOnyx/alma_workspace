@@ -15,6 +15,8 @@ so that I can choose my path intuitively without reading instructions.
   When the screen is displayed
   Then three lines are centered — Respirar, Hablar, Leer
   And the font is Cormorant Garamond, 28pt, color Crema
+  And the name "Alma" is the running head at the top, in Humo small caps
+  And the tagline "tres caminos del tango" sits at the bottom in Humo
   And there are no icons, subtitles, or tab bar
 
 US 2.2

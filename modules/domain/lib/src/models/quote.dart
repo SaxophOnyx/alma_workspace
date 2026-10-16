@@ -1,5 +1,8 @@
+import 'text_line.dart';
+
 class Quote {
-  final String line;
+  /// The quoted lines, with Lunfardo words marked as in a text.
+  final TextLine line;
   final String title;
   final int year;
   final String textId;

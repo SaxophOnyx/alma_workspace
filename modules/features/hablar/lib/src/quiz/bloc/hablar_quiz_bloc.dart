@@ -12,6 +12,7 @@ part 'hablar_quiz_state.dart';
 class HablarQuizBloc extends Bloc<HablarQuizEvent, HablarQuizState> {
   final CreateQuizUseCase _createQuizUseCase;
   final HablarNavigator _navigator;
+  final Duration _answerEchoDuration;
   final Duration _explanationDuration;
 
   Timer? _explanationTimer;
@@ -19,13 +20,16 @@ class HablarQuizBloc extends Bloc<HablarQuizEvent, HablarQuizState> {
   HablarQuizBloc({
     required CreateQuizUseCase createQuizUseCase,
     required HablarNavigator navigator,
-    Duration explanationDuration = AppMotions.silenceShort,
+    Duration answerEchoDuration = AppMotions.quizAnswerEcho,
+    Duration explanationDuration = AppMotions.quizExplanation,
   }) : _createQuizUseCase = createQuizUseCase,
        _navigator = navigator,
+       _answerEchoDuration = answerEchoDuration,
        _explanationDuration = explanationDuration,
        super(const HablarQuizState()) {
     on<QuizStarted>(_onStarted);
     on<OptionSelected>(_onOptionSelected);
+    on<_AnswerEchoElapsed>(_onAnswerEchoElapsed);
     on<ExplanationDismissed>(_onExplanationDismissed);
     on<_ExplanationTimeElapsed>(_onExplanationTimeElapsed);
     on<TryAgainPressed>(_onTryAgainPressed);
@@ -43,10 +47,21 @@ class HablarQuizBloc extends Bloc<HablarQuizEvent, HablarQuizState> {
 
     emit(
       state.copyWith(
-        phase: QuizPhase.explanation,
+        phase: QuizPhase.answered,
+        selectedIndex: event.optionIndex,
         correctCount: state.correctCount + (question.isCorrect(event.optionIndex) ? 1 : 0),
       ),
     );
+    _explanationTimer?.cancel();
+    _explanationTimer = Timer(_answerEchoDuration, () {
+      if (!isClosed) add(const _AnswerEchoElapsed());
+    });
+  }
+
+  void _onAnswerEchoElapsed(_AnswerEchoElapsed event, Emitter<HablarQuizState> emit) {
+    if (state.phase != QuizPhase.answered) return;
+
+    emit(state.copyWith(phase: QuizPhase.explanation));
     _explanationTimer?.cancel();
     _explanationTimer = Timer(_explanationDuration, () {
       if (!isClosed) add(const _ExplanationTimeElapsed());
@@ -88,7 +103,7 @@ class HablarQuizBloc extends Bloc<HablarQuizEvent, HablarQuizState> {
 
     final int next = state.questionIndex + 1;
     if (next < state.questions.length) {
-      emit(state.copyWith(questionIndex: next, phase: QuizPhase.question));
+      emit(state.copyWith(questionIndex: next, phase: QuizPhase.question, selectedIndex: null));
     } else {
       emit(state.copyWith(phase: QuizPhase.result));
     }
@@ -102,6 +117,7 @@ class HablarQuizBloc extends Bloc<HablarQuizEvent, HablarQuizState> {
         questions: const <QuizQuestion>[],
         questionIndex: 0,
         phase: QuizPhase.question,
+        selectedIndex: null,
         correctCount: 0,
         error: null,
       ),

@@ -29,7 +29,7 @@ came from and how it evolved.
   When the card is displayed
   Then the chain is visible: Italian "grilla" to "cricket"
        to Lunfardo "fickle fate"
-  And the chain is set in Inter, 14pt, color Humo
+  And the chain is set in Montserrat, 14pt, color Humo
 
 US 6.3
 As a user,

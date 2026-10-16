@@ -99,7 +99,7 @@ class LeerReadingBloc extends Bloc<LeerReadingEvent, LeerReadingState> {
 
   Future<void> _onWordPressed(WordPressed event, Emitter<LeerReadingState> emit) async {
     if (state.phase != ReadingPhase.line || state.isNavigating) return;
-    emit(state.copyWith(isNavigating: true));
+    emit(state.copyWith(isNavigating: true, activeWordId: event.wordId));
 
     try {
       await _navigator.openWordAnnotation(event.wordId);
@@ -108,7 +108,7 @@ class LeerReadingBloc extends Bloc<LeerReadingEvent, LeerReadingState> {
     }
     if (isClosed) return;
 
-    emit(state.copyWith(isNavigating: false));
+    emit(state.copyWith(isNavigating: false, activeWordId: null));
   }
 
   Future<void> _onAnotherTextPressed(AnotherTextPressed event, Emitter<LeerReadingState> emit) {

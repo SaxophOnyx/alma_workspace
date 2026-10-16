@@ -30,77 +30,137 @@ class WordCard extends StatelessWidget {
     final AppColorsTheme colors = context.appColors;
     final String? errorText = this.errorText;
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        AppText(
-          text: word.word,
-          style: texts.title,
-          maxLines: null,
-          color: colors.accent,
-        ),
-        const SizedBox(height: AppDimens.gapXs),
-        AppText(
-          text: word.pronunciation,
-          style: texts.captionSmall,
-          color: colors.textSecondary,
-        ),
-        const SizedBox(height: AppDimens.gapL),
-        AppText(
-          text: word.meaning,
-          style: texts.body,
-          maxLines: null,
-          color: colors.textPrimary,
-        ),
-        const SizedBox(height: AppDimens.gapL),
-        AppText(
-          text: t.hablar.card.etymology,
-          style: texts.caption,
-          color: colors.textSecondary,
-        ),
-        const SizedBox(height: AppDimens.gapXs),
-        EtymologyChain(steps: word.etymology),
-        const SizedBox(height: AppDimens.gapL),
-        AppText(
-          text: t.hablar.card.example,
-          style: texts.caption,
-          color: colors.textSecondary,
-        ),
-        const SizedBox(height: AppDimens.gapS),
-        ExampleLine(line: word.example.line, wordId: word.id),
-        const SizedBox(height: AppDimens.gapXs),
-        AppText(
-          text: t.hablar.card.source(title: word.example.title, year: word.example.year),
-          style: texts.captionSmall,
-          color: colors.textSecondary,
-        ),
-        AppTextButton(
-          text: t.hablar.card.openText,
-          onPressed: onOpenTextPressed,
-        ),
-        if (word.related.isNotEmpty) ...<Widget>[
-          const SizedBox(height: AppDimens.gapM),
+    final List<Widget> sections = <Widget>[
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
           AppText(
-            text: t.hablar.card.related(words: word.related.join(t.hablar.card.relatedSeparator)),
-            style: texts.caption,
+            text: word.word,
+            style: texts.display,
             maxLines: null,
+            color: colors.accent,
+          ),
+          _CollectedRule(isCollected: isInDictionary),
+          const SizedBox(height: AppDimens.gapS),
+          AppText(
+            text: word.pronunciation,
+            style: texts.captionSmall,
             color: colors.textSecondary,
+          ),
+          const SizedBox(height: AppDimens.gapL),
+          AppText(
+            text: word.meaning,
+            style: texts.bodyLarge,
+            maxLines: null,
+            color: colors.textPrimary,
           ),
         ],
-        const SizedBox(height: AppDimens.gapL),
-        AppTextButton(
-          text: isInDictionary ? t.hablar.card.inDictionary : t.hablar.card.add,
-          onPressed: onAddPressed,
-          isEnabled: !isInDictionary && !isAdding,
+      ),
+      _Section(
+        label: t.hablar.card.etymology,
+        child: EtymologyChain(steps: word.etymology),
+      ),
+      _Section(
+        label: t.hablar.card.example,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          spacing: AppDimens.gapXs,
+          children: <Widget>[
+            ExampleLine(line: word.example.line, wordId: word.id),
+            AppText(
+              text: t.hablar.card.source(title: word.example.title, year: word.example.year),
+              style: texts.captionSmall,
+              color: colors.textSecondary,
+            ),
+            AppTextButton(
+              text: t.hablar.card.openText,
+              onPressed: onOpenTextPressed,
+            ),
+          ],
         ),
-        if (errorText != null)
-          AppText(
-            text: errorText,
-            style: texts.captionSmall,
-            maxLines: null,
-            color: colors.textSecondary,
+      ),
+      if (word.related.isNotEmpty)
+        AppText(
+          text: t.hablar.card.related(words: word.related.join(t.hablar.card.relatedSeparator)),
+          style: texts.caption,
+          maxLines: null,
+          color: colors.textSecondary,
+        ),
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          AppTextButton(
+            text: isInDictionary ? t.hablar.card.inDictionary : t.hablar.card.add,
+            onPressed: onAddPressed,
+            isEnabled: !isInDictionary && !isAdding,
+          ),
+          if (errorText != null)
+            AppText(
+              text: errorText,
+              style: texts.captionSmall,
+              maxLines: null,
+              color: colors.textSecondary,
+            ),
+        ],
+      ),
+    ];
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      spacing: AppDimens.gapXl,
+      children: <Widget>[
+        for (int i = 0; i < sections.length; i++)
+          AppFadeIn(
+            delay: AppMotions.staggerStep * i,
+            child: sections[i],
           ),
       ],
+    );
+  }
+}
+
+class _Section extends StatelessWidget {
+  final String label;
+  final Widget child;
+
+  const _Section({
+    required this.label,
+    required this.child,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      spacing: AppDimens.gapS,
+      children: <Widget>[
+        AppText(
+          text: label,
+          style: context.appTexts.smallCaps,
+          color: context.appColors.textSecondary,
+        ),
+        child,
+      ],
+    );
+  }
+}
+
+/// An Oro line that draws itself under the word once it is in the dictionary.
+class _CollectedRule extends StatelessWidget {
+  final bool isCollected;
+
+  const _CollectedRule({
+    required this.isCollected,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedContainer(
+      duration: AppMotions.durationShort,
+      curve: AppMotions.entrance,
+      width: isCollected ? AppDimens.ruleWidth : 0,
+      height: AppDimens.ruleThickness,
+      color: context.appColors.accent,
     );
   }
 }

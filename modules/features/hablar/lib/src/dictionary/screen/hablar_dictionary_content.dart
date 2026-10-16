@@ -7,6 +7,9 @@ import '../bloc/hablar_dictionary_bloc.dart';
 import '../widgets/dictionary_word_item.dart';
 
 class HablarDictionaryContent extends StatelessWidget {
+  // Only the first screenful enters one by one; words further down appear as they scroll in.
+  static const int _staggeredItemCount = 12;
+
   const HablarDictionaryContent({super.key});
 
   @override
@@ -18,13 +21,14 @@ class HablarDictionaryContent extends StatelessWidget {
 
     return AppScaffold(
       onBack: () => bloc.add(const DictionaryBackPressed()),
+      runningHead: t.hablar.title,
       body: BlocBuilder<HablarDictionaryBloc, HablarDictionaryState>(
         buildWhen: (HablarDictionaryState previous, HablarDictionaryState current) =>
             previous.isLoading != current.isLoading ||
             previous.dictionary != current.dictionary ||
             previous.error != current.error,
         builder: (BuildContext context, HablarDictionaryState state) {
-          if (state.isLoading) return const SizedBox.shrink();
+          if (state.isLoading) return const AppLoadingPulse();
 
           final PersonalDictionary? dictionary = state.dictionary;
           final Exception? error = state.error;
@@ -39,40 +43,57 @@ class HablarDictionaryContent extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               Padding(
-                padding: const EdgeInsets.all(AppDimens.screenPadding),
-                child: AppText(
-                  text: dictionary == null
-                      ? t.hablar.entries.dictionary
-                      : t.hablar.entries.dictionaryWithCount(count: dictionary.words.length),
-                  style: texts.title,
-                  maxLines: null,
+                padding: const EdgeInsets.fromLTRB(
+                  AppDimens.screenPadding,
+                  AppDimens.gapXl,
+                  AppDimens.screenPadding,
+                  AppDimens.gapL,
+                ),
+                child: AppFadeIn(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    spacing: AppDimens.gapS,
+                    children: <Widget>[
+                      AppSectionTitle(text: t.hablar.entries.dictionary),
+                      if (dictionary != null && dictionary.words.isNotEmpty)
+                        AppText(
+                          text: t.hablar.dictionary.wordCount(n: dictionary.words.length),
+                          style: texts.captionSmall,
+                          color: colors.textSecondary,
+                        ),
+                    ],
+                  ),
                 ),
               ),
               if (message != null)
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: AppDimens.screenPadding),
-                  child: AppText(
-                    text: message,
-                    style: texts.body,
-                    maxLines: null,
-                    color: colors.textSecondary,
+                  child: AppFadeIn(
+                    delay: AppMotions.staggerStep,
+                    child: AppText(
+                      text: message,
+                      style: texts.quote,
+                      maxLines: null,
+                      color: colors.textSecondary,
+                    ),
                   ),
                 ),
               if (dictionary != null && dictionary.words.isNotEmpty)
                 Expanded(
-                  child: AppFadeIn(
-                    duration: AppMotions.durationMedium,
-                    child: ListView.builder(
-                      padding: const EdgeInsets.all(AppDimens.screenPadding),
-                      itemCount: dictionary.words.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        final LunfardoWord word = dictionary.words[index];
-                        return DictionaryWordItem(
+                  child: ListView.builder(
+                    padding: const EdgeInsets.symmetric(horizontal: AppDimens.screenPadding),
+                    itemCount: dictionary.words.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      final LunfardoWord word = dictionary.words[index];
+                      return AppFadeIn(
+                        delay: index < _staggeredItemCount ? AppMotions.staggerStep * (index + 1) : Duration.zero,
+                        child: DictionaryWordItem(
                           word: word.word,
+                          meaning: word.meaning,
                           onPressed: () => bloc.add(WordPressed(word.id)),
-                        );
-                      },
-                    ),
+                        ),
+                      );
+                    },
                   ),
                 ),
             ],

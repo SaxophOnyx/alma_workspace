@@ -15,28 +15,26 @@ class SessionEndQuote extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AppTextTheme texts = context.appTexts;
+    final AppColorsTheme colors = context.appColors;
+    final TextStyle lunfardo = TextStyle(
+      decoration: TextDecoration.underline,
+      decorationColor: colors.accent,
+      decorationThickness: AppDimens.underlineThickness,
+    );
 
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: onPressed,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        spacing: AppDimens.gapM,
-        children: <Widget>[
-          AppText(
-            text: quote.line,
-            style: texts.listTitle,
-            maxLines: null,
-            textAlign: TextAlign.center,
-            color: context.appColors.textPrimary,
-          ),
-          AppText(
-            text: context.translations.respirar.end.source(title: quote.title, year: quote.year),
-            style: texts.captionSmall,
-            textAlign: TextAlign.center,
-            color: context.appColors.textSecondary,
-          ),
-        ],
+      child: AppRichText(
+        maxLines: null,
+        textAlign: TextAlign.center,
+        text: TextSpan(
+          style: texts.poetry.copyWith(color: colors.textPrimary),
+          children: <InlineSpan>[
+            for (final TextSegment segment in quote.line.segments)
+              TextSpan(text: segment.text, style: segment.isLunfardo ? lunfardo : null),
+          ],
+        ),
       ),
     );
   }

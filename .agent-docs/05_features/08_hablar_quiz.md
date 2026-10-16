@@ -25,10 +25,13 @@ so that I learn from mistakes rather than just guessing.
 
   Given the user has answered a question (correctly or incorrectly)
   When the answer is registered
-  Then a short explanation appears (etymology or example)
-  And there is no sound, no "correct/incorrect" animation,
-       no score display
-  And after 2 seconds or on tap — the next question appears
+  Then for 700ms the chosen answer is echoed: the right option turns
+       Oro, a wrong choice gets a thin Carmín line, the rest dim
+  And then a short explanation appears (etymology or example)
+  And there is no sound and no score display
+  And the explanation stays until tapped ("tap to continue"),
+       or moves on by itself after 6 seconds
+  And the running head shows the position, e.g. "3 / 10"
 
 US 8.3
 As a user,

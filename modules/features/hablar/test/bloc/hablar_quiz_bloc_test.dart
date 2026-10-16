@@ -8,6 +8,7 @@ import 'package:hablar/src/navigation/hablar_navigator.dart';
 import 'package:hablar/src/quiz/bloc/hablar_quiz_bloc.dart';
 import 'package:hablar/src/quiz/misc/quiz_phase.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:shared_ui/shared_ui.dart';
 
 import '../helpers/word_fixtures.dart';
 
@@ -16,7 +17,8 @@ class _MockCreateQuizUseCase extends Mock implements CreateQuizUseCase {}
 class _MockHablarNavigator extends Mock implements HablarNavigator {}
 
 /// US 8.2: the next question appears after two seconds.
-const Duration _explanation = Duration(seconds: 2);
+const Duration _echo = AppMotions.quizAnswerEcho;
+const Duration _explanation = AppMotions.quizExplanation;
 const Duration _justBefore = Duration(milliseconds: 1);
 
 QuizQuestion _question(String id) {
@@ -47,7 +49,7 @@ void main() {
   });
 
   HablarQuizBloc buildBloc() {
-    // Default timing on purpose: the spec asks for two seconds.
+    // Default timing on purpose: the tests pin the real echo and explanation times.
     return HablarQuizBloc(createQuizUseCase: createQuiz, navigator: navigator);
   }
 
@@ -71,10 +73,12 @@ void main() {
     int questionIndex = 0,
     QuizPhase phase = QuizPhase.question,
     int correctCount = 0,
+    int? selectedIndex,
     bool isNavigating = false,
     Matcher error = isNull,
   }) {
     return isA<HablarQuizState>()
+        .having((HablarQuizState s) => s.selectedIndex, 'selectedIndex', selectedIndex)
         .having((HablarQuizState s) => s.isLoading, 'isLoading', isLoading)
         .having((HablarQuizState s) => s.questions, 'questions', questions)
         .having((HablarQuizState s) => s.questionIndex, 'questionIndex', questionIndex)
@@ -100,6 +104,12 @@ void main() {
   void send(FakeAsync async, HablarQuizBloc bloc, HablarQuizEvent event) {
     bloc.add(event);
     async.flushMicrotasks();
+  }
+
+  /// Chooses [option] and waits out the echo, so the explanation is on screen.
+  void answer(FakeAsync async, HablarQuizBloc bloc, int option) {
+    send(async, bloc, OptionSelected(option));
+    async.elapse(_echo);
   }
 
   test('initial state is loading on the first question', () {
@@ -168,22 +178,22 @@ void main() {
 
   group('OptionSelected', () {
     blocTest<HablarQuizBloc, HablarQuizState>(
-      'shows the explanation and counts a right answer',
+      'echoes the chosen option and counts a right answer',
       build: buildBloc,
       seed: loaded,
       act: (HablarQuizBloc bloc) => bloc.add(const OptionSelected(1)),
       expect: () => <Matcher>[
-        stateWith(isLoading: false, questions: _questions, phase: QuizPhase.explanation, correctCount: 1),
+        stateWith(isLoading: false, questions: _questions, phase: QuizPhase.answered, correctCount: 1, selectedIndex: 1),
       ],
     );
 
     blocTest<HablarQuizBloc, HablarQuizState>(
-      'shows the same explanation without counting a wrong answer',
+      'echoes a wrong answer without counting it',
       build: buildBloc,
       seed: loaded,
       act: (HablarQuizBloc bloc) => bloc.add(const OptionSelected(3)),
       expect: () => <Matcher>[
-        stateWith(isLoading: false, questions: _questions, phase: QuizPhase.explanation),
+        stateWith(isLoading: false, questions: _questions, phase: QuizPhase.answered, selectedIndex: 3),
       ],
     );
 
@@ -195,7 +205,7 @@ void main() {
         ..add(const OptionSelected(1))
         ..add(const OptionSelected(1)),
       expect: () => <Matcher>[
-        stateWith(isLoading: false, questions: _questions, phase: QuizPhase.explanation, correctCount: 1),
+        stateWith(isLoading: false, questions: _questions, phase: QuizPhase.answered, correctCount: 1, selectedIndex: 1),
       ],
     );
 
@@ -209,9 +219,34 @@ void main() {
   });
 
   group('explanation timing', () {
-    test('moves to the next question after the explanation time', () {
+    test('shows the explanation once the echo is over', () {
       runQuiz(loaded(), (FakeAsync async, HablarQuizBloc bloc) {
         send(async, bloc, const OptionSelected(1));
+
+        async.elapse(_echo - _justBefore);
+        expect(bloc.state.phase, QuizPhase.answered);
+
+        async.elapse(_justBefore);
+        expect(bloc.state.phase, QuizPhase.explanation);
+        expect(bloc.state.selectedIndex, 1);
+      });
+    });
+
+    test('a tap during the echo does not skip the explanation', () {
+      runQuiz(loaded(), (FakeAsync async, HablarQuizBloc bloc) {
+        send(async, bloc, const OptionSelected(1));
+        send(async, bloc, const ExplanationDismissed());
+        expect(bloc.state.phase, QuizPhase.answered);
+
+        async.elapse(_echo);
+        expect(bloc.state.phase, QuizPhase.explanation);
+        expect(bloc.state.questionIndex, 0);
+      });
+    });
+
+    test('moves to the next question after the explanation time', () {
+      runQuiz(loaded(), (FakeAsync async, HablarQuizBloc bloc) {
+        answer(async, bloc, 1);
 
         async.elapse(_explanation - _justBefore);
         expect(bloc.state.phase, QuizPhase.explanation);
@@ -220,12 +255,13 @@ void main() {
         async.elapse(_justBefore);
         expect(bloc.state.phase, QuizPhase.question);
         expect(bloc.state.questionIndex, 1);
+        expect(bloc.state.selectedIndex, isNull);
       });
     });
 
     test('moves on at once on tap and does not skip a question when the time runs out', () {
       runQuiz(loaded(), (FakeAsync async, HablarQuizBloc bloc) {
-        send(async, bloc, const OptionSelected(1));
+        answer(async, bloc, 1);
         send(async, bloc, const ExplanationDismissed());
         expect(bloc.state.questionIndex, 1);
         expect(bloc.state.phase, QuizPhase.question);
@@ -247,7 +283,7 @@ void main() {
 
     test('shows the result after the last explanation', () {
       runQuiz(loaded(questionIndex: 2, correctCount: 1), (FakeAsync async, HablarQuizBloc bloc) {
-        send(async, bloc, const OptionSelected(1));
+        answer(async, bloc, 1);
         async.elapse(_explanation);
 
         expect(bloc.state.phase, QuizPhase.result);
@@ -258,8 +294,8 @@ void main() {
 
     test('a whole quiz reports how many answers were right', () {
       runQuiz(loaded(), (FakeAsync async, HablarQuizBloc bloc) {
-        for (final int answer in <int>[1, 0, 1]) {
-          send(async, bloc, OptionSelected(answer));
+        for (final int option in <int>[1, 0, 1]) {
+          answer(async, bloc, option);
           send(async, bloc, const ExplanationDismissed());
         }
 
@@ -274,6 +310,7 @@ void main() {
         async.flushMicrotasks();
         bloc.add(const OptionSelected(1));
         async.flushMicrotasks();
+        async.elapse(_echo);
 
         unawaited(bloc.close());
         async.flushMicrotasks();
@@ -349,7 +386,7 @@ void main() {
 
     test('stops the explanation timer when leaving', () {
       runQuiz(loaded(), (FakeAsync async, HablarQuizBloc bloc) {
-        send(async, bloc, const OptionSelected(1));
+        answer(async, bloc, 1);
         send(async, bloc, const QuizBackPressed());
 
         async.elapse(_explanation);

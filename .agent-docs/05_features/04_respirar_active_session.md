@@ -38,7 +38,8 @@ so that I can stop if I lose the rhythm or get distracted.
 
   Given an active breathing session
   When the user performs a short tap on the screen
-  Then the point freezes at its current size
+  Then the point freezes at its current size and dims
+  And the word "pausa" appears below it in Humo
   And the session timer pauses
   And a second tap resumes the session from the same point
 

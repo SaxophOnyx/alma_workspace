@@ -16,13 +16,14 @@ class LeerContextContent extends StatelessWidget {
 
     return AppScaffold(
       onBack: () => bloc.add(const ContextBackPressed()),
+      runningHead: t.leer.title,
       body: BlocBuilder<LeerContextBloc, LeerContextState>(
         buildWhen: (LeerContextState previous, LeerContextState current) =>
             previous.isLoading != current.isLoading ||
             previous.text != current.text ||
             previous.error != current.error,
         builder: (BuildContext context, LeerContextState state) {
-          if (state.isLoading) return const SizedBox.shrink();
+          if (state.isLoading) return const AppLoadingPulse();
 
           final TangoText? text = state.text;
           if (text == null) {
@@ -38,27 +39,16 @@ class LeerContextContent extends StatelessWidget {
             );
           }
 
-          return AppFadeIn(
-            duration: AppMotions.durationMedium,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                Expanded(
-                  child: SingleChildScrollView(
-                    padding: const EdgeInsets.all(AppDimens.screenPadding),
-                    child: ContextCard(text: text),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(AppDimens.screenPadding),
-                  child: Center(
-                    child: AppTextButton(
-                      text: t.leer.read,
-                      onPressed: () => bloc.add(const ReadPressed()),
-                    ),
-                  ),
-                ),
-              ],
+          return SingleChildScrollView(
+            padding: const EdgeInsets.fromLTRB(
+              AppDimens.screenPadding,
+              AppDimens.gapXl,
+              AppDimens.screenPadding,
+              AppDimens.gapXxl,
+            ),
+            child: ContextCard(
+              text: text,
+              onReadPressed: () => bloc.add(const ReadPressed()),
             ),
           );
         },

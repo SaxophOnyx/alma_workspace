@@ -12,7 +12,13 @@ class _MockGetRandomQuoteUseCase extends Mock implements GetRandomQuoteUseCase {
 class _MockRespirarNavigator extends Mock implements RespirarNavigator {}
 
 const Quote _quote = Quote(
-  line: 'Y si un día la suerte,\nque es grela...',
+  line: TextLine(
+    segments: <TextSegment>[
+      TextSegment(text: 'Y si un día la suerte,\nque es '),
+      TextSegment(text: 'grela', wordId: 'grela'),
+      TextSegment(text: '...'),
+    ],
+  ),
   title: 'Yira, yira',
   year: 1930,
   textId: 'yira_yira',

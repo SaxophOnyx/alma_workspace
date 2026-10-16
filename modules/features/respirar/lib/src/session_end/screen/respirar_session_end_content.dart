@@ -41,14 +41,25 @@ class RespirarSessionEndContent extends StatelessWidget {
                           onPressed: () => bloc.add(const QuotePressed()),
                         ),
                       ),
+                      const SizedBox(height: AppDimens.gapL),
+                      AppFadeIn(
+                        delay: AppMotions.silenceShort + AppMotions.staggerInterval,
+                        duration: AppMotions.durationQuoteFadeIn,
+                        child: AppText(
+                          text: t.respirar.end.source(title: quote.title, year: quote.year),
+                          style: context.appTexts.captionSmall,
+                          textAlign: TextAlign.center,
+                          color: context.appColors.textSecondary,
+                        ),
+                      ),
                       const SizedBox(height: AppDimens.gapXxl),
                     ],
                     AppFadeIn(
-                      delay: AppMotions.silenceShort + AppMotions.staggerInterval,
+                      delay: AppMotions.silenceShort + AppMotions.staggerInterval * 2,
                       duration: AppMotions.durationQuoteFadeIn,
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
-                        spacing: AppDimens.gapM,
+                        spacing: AppDimens.gapS,
                         children: <Widget>[
                           if (quote != null)
                             AppTextButton(
@@ -58,6 +69,7 @@ class RespirarSessionEndContent extends StatelessWidget {
                           AppTextButton(
                             text: t.respirar.end.home,
                             onPressed: () => bloc.add(const HomePressed()),
+                            style: AppTextButtonStyle.quiet,
                           ),
                         ],
                       ),

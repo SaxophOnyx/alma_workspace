@@ -6,7 +6,7 @@ A four-slide wizard. Horizontal swipe or tap "Next".
 Progress: four dots at the bottom of the screen. Active — gold (6pt).
 Inactive — grey-brown (4pt).
 
-"Skip" button in the top-right corner. Inter, 14pt, Humo color.
+"Skip" button in the top-right corner. Cormorant small caps, 17pt, Humo color.
 On tap — transitions directly to the main screen. Onboarding progress
 is recorded as complete.
 
@@ -36,7 +36,7 @@ Below it, after another 1000ms, in small type:
 Font: Cormorant Garamond, 18pt, Humo.
 Line spacing: 28pt.
 
-Bottom: dot 1 of 4 (active) and the word "Next" (Inter, 16pt, Crema).
+Bottom: dot 1 of 4 (active) and the word "Next" (Cormorant italic, 22pt, Crema).
 
 Purpose: set the tone. Do not explain what the app does.
 Say what it is not. Tango is not movement. Tango is the silence
@@ -82,7 +82,7 @@ Black screen. One line in the center:
     No internet.
     No notifications.
 
-Font: Inter, 18pt, Crema.
+Font: Montserrat, 18pt, Crema.
 Line spacing: 32pt.
 
 After 800ms a second part appears below (14pt, Humo):

@@ -373,12 +373,14 @@ void main() {
         async.flushMicrotasks();
 
         expect(bloc.state.isNavigating, isTrue);
+        expect(bloc.state.activeWordId, 'grela');
         verify(() => navigator.openWordAnnotation('grela')).called(1);
 
         annotation.complete();
         async.flushMicrotasks();
 
         expect(bloc.state.isNavigating, isFalse);
+        expect(bloc.state.activeWordId, isNull);
         expectAt(bloc, phase: ReadingPhase.line, line: 1);
       });
     });

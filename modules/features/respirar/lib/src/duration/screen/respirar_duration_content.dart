@@ -5,7 +5,12 @@ import 'package:shared_ui/shared_ui.dart';
 import '../bloc/respirar_duration_bloc.dart';
 
 class RespirarDurationContent extends StatelessWidget {
-  const RespirarDurationContent({super.key});
+  final BreathingMode mode;
+
+  const RespirarDurationContent({
+    super.key,
+    required this.mode,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -14,19 +19,22 @@ class RespirarDurationContent extends StatelessWidget {
 
     return AppScaffold(
       onBack: () => bloc.add(const DurationBackPressed()),
-      body: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          spacing: AppDimens.gapM,
-          children: <Widget>[
-            for (final SessionDuration duration in SessionDuration.values)
-              AppTextButton(
-                text: t.respirar.durationMinutes(minutes: duration.value.inMinutes),
-                onPressed: () => bloc.add(DurationSelected(duration)),
-                style: AppTextButtonStyle.menu,
-              ),
-          ],
-        ),
+      runningHead: t.respirar.title,
+      body: AppMenuLayout(
+        title: switch (mode) {
+          BreathingMode.compas => t.respirar.modes.compas,
+          BreathingMode.pausa => t.respirar.modes.pausa,
+          BreathingMode.caminar => t.respirar.modes.caminar,
+          BreathingMode.abrazo => t.respirar.modes.abrazo,
+        },
+        items: <Widget>[
+          for (final SessionDuration duration in SessionDuration.values)
+            AppTextButton(
+              text: t.respirar.durationMinutes(minutes: duration.value.inMinutes),
+              onPressed: () => bloc.add(DurationSelected(duration)),
+              style: AppTextButtonStyle.navigation,
+            ),
+        ],
       ),
     );
   }

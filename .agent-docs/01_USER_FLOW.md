@@ -76,6 +76,13 @@ On subsequent launches, onboarding is not shown.
 
 Three lines centered, Cormorant Garamond, 28pt.
 Color Crema (#F2EBE0) on Negro (#0D0B09).
+"Alma" as the small-caps running head at the top; the tagline
+"tres caminos del tango" in Humo at the bottom.
+
+Module menus (Respirar, Hablar, Leer list, duration) share one
+layout: the section title large on the left margin about a third
+down, a short Oro rule under it, the entries below, entering one
+after another.
 On tap the line softly highlights in Oro (#C4A265), then transition.
 
 No icons. No subtitles. No tab bar.
@@ -281,7 +288,8 @@ Tap "Read" -> line-by-line mode.
     |  (tap -> next line)         |
     +-----------------------------+
 
-Lines appear one at a time. Tap on screen -> next line.
+Lines appear one at a time and build up within a stanza
+(earlier lines dimmed). Tap on screen -> next line.
 Lunfardo words have a gold underline.
 
 Tap on a Lunfardo word -> popup card:

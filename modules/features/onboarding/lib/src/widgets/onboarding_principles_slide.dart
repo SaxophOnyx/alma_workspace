@@ -21,16 +21,19 @@ class OnboardingPrinciplesSlide extends StatelessWidget {
         for (final String line in lines)
           AppText(
             text: line,
-            style: texts.title,
+            style: texts.bodyLarge,
             textAlign: TextAlign.center,
           ),
         const SizedBox(height: AppDimens.gapL),
-        AppText(
-          text: t.onboarding.principles.closing,
-          style: texts.quote,
-          maxLines: null,
-          textAlign: TextAlign.center,
-          color: context.appColors.textSecondary,
+        AppFadeIn(
+          delay: AppMotions.durationMedium,
+          child: AppText(
+            text: t.onboarding.principles.closing,
+            style: texts.quote,
+            maxLines: null,
+            textAlign: TextAlign.center,
+            color: context.appColors.textSecondary,
+          ),
         ),
       ],
     );

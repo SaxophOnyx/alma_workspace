@@ -14,8 +14,9 @@ so that I can choose by mood or by era.
   Given the user has entered the Leer module
   When the text list is displayed
   Then poem titles and years are visible
-  And title font is Cormorant Garamond, 20pt, Crema
-  And years are Inter, 13pt, Humo
+  And title font is Cormorant Garamond, 22pt, Crema,
+       with the author below in Montserrat, 13pt, Humo
+  And years are Cormorant Garamond, 20pt, Humo, right-aligned
   And the list is scrollable
 
 US 10.2

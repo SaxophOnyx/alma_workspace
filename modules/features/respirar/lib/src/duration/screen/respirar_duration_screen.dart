@@ -25,7 +25,7 @@ class RespirarDurationScreen extends StatelessWidget {
           navigator: context.resolve<RespirarNavigator>(),
         );
       },
-      child: const RespirarDurationContent(),
+      child: RespirarDurationContent(mode: mode),
     );
   }
 }

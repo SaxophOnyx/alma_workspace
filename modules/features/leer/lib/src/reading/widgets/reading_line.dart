@@ -5,11 +5,15 @@ import 'package:shared_ui/shared_ui.dart';
 
 class ReadingLine extends StatefulWidget {
   final TextLine line;
+
+  /// The word whose annotation is open; drawn in Oro so the reader sees what they asked about.
+  final String? activeWordId;
   final ValueChanged<String> onWordPressed;
 
   const ReadingLine({
     super.key,
     required this.line,
+    required this.activeWordId,
     required this.onWordPressed,
   });
 
@@ -66,18 +70,22 @@ class _ReadingLineState extends State<ReadingLine> {
       decorationColor: colors.accent,
       decorationThickness: AppDimens.underlineThickness,
     );
+    final TextStyle active = underline.copyWith(color: colors.accent);
     final List<TextSegment> segments = widget.line.segments;
 
     return AppRichText(
       maxLines: null,
-      textAlign: TextAlign.center,
       text: TextSpan(
         style: context.appTexts.poetry.copyWith(color: colors.textPrimary),
         children: <InlineSpan>[
           for (int i = 0; i < segments.length; i++)
             TextSpan(
               text: segments[i].text,
-              style: segments[i].isLunfardo ? underline : null,
+              style: switch (segments[i]) {
+                TextSegment(wordId: final String id) when id == widget.activeWordId => active,
+                TextSegment(isLunfardo: true) => underline,
+                _ => null,
+              },
               recognizer: _recognizers[i],
             ),
         ],

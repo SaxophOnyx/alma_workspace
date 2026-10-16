@@ -107,17 +107,34 @@ Usage:         Everything that does not require full attention.
 
     Element                    Font                Size     Color
     -------------------------------------------------------------------
-    "Alma" title               Cormorant Garamond  36pt     Crema
+    "Alma" title               Cormorant Garamond  42pt     Crema
+    Section title              Cormorant Garamond  44pt     Crema +
+                                                             24pt Oro rule
     Navigation lines           Cormorant Garamond  28pt     Crema
     Poetry line                Cormorant Garamond  24pt     Crema
     Lunfardo word in text      Cormorant Garamond  24pt     Crema +
                                                              Oro underline
-    Word card title            Cormorant Garamond  26pt     Oro
-    Definition                 Inter               16pt     Crema
-    Etymology                  Inter               14pt     Humo
-    Date, author name          Inter               13pt     Humo
-    Button-word                Inter               16pt     Crema
-    "Skip" button              Inter               14pt     Humo
+    Word card title            Cormorant Garamond  44pt     Oro
+    Button-word                Cormorant Garamond  22pt     Crema
+                               italic
+    Running head, quiet        Cormorant Garamond  17pt     Humo
+    actions ("Skip", "Home",   small caps, letter-
+    "Close"), labels           spaced
+    Definition                 Montserrat          16-18pt  Crema
+    Etymology                  Montserrat          14pt     Humo
+    Date, author name          Montserrat          13pt     Humo
+
+Montserrat is the only sans-serif and is kept to reading copy
+(definitions, context, captions). Anything that acts — buttons,
+labels, the running head — is set in Cormorant, so actions read
+as part of the book rather than as interface chrome.
+Cormorant figures are set as lining figures, so counters such as
+"(1)" and "3 / 10" do not read as letters.
+
+The running head is a single small-caps line at the top of every
+screen that has one, naming the parent: "Alma" on module menus,
+the module name inside a module, "3 / 10" in the quiz. The back
+arrow sits to its left in Humo.
 
 
 ## The Breathing Point in Respirar
@@ -128,11 +145,20 @@ The point is not a flat circle. It is a radial gradient:
   Edge:      #C4A265 (Oro), opacity 0%
 
 Diameter at rest: 12pt.
-Diameter at inhale (maximum): 80pt.
-Diameter at exhale (minimum): 16pt.
+Diameter at inhale (maximum): 140pt.
+Diameter at exhale (minimum): 20pt.
 Transition: ease-in-out, duration equals the breathing phase.
 
-On hold the point does not change. It is frozen. Like a dancer.
+Halo: a second, much fainter radial gradient behind the point
+(Oro at 14% fading to 0%), 2.6 times the point's diameter, growing
+and shrinking with it. It makes the point read as light, not a disc.
+
+On hold the point does not change size. It is frozen. Like a dancer.
+Only its light flickers very slowly (opacity 100% to 94%, 2.4 s),
+like a candle.
+
+Paused: the point dims to 40% and the word "pausa" appears below
+it in Humo small caps.
 
 
 ## Onboarding Colors
@@ -151,5 +177,13 @@ No gradients in the interface (except the breathing point in Respirar).
 No shadows. No outlines. No borders.
 No colored icons. No colored rectangular buttons.
 No second accent color. Gold is one. Carmine is the exception.
-No color animation. Color appears and disappears only through
-opacity (fade).
+No color animation, with two exceptions: a tapped word-button
+eases from Crema to Oro (200 ms), and in the quiz the right answer
+turns Oro while a wrong choice gets a thin Carmín line. Everything
+else appears and disappears only through opacity (fade).
+
+Motion: screens change by fade-through (the old screen fades out
+first, the new one fades in while rising 8pt), and menus, lists
+and card sections enter one after another, 90 ms apart.
+Loading shows nothing for 300 ms, then a single slowly pulsing
+Oro dot.

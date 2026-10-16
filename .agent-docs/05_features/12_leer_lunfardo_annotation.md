@@ -14,7 +14,9 @@ so that I don't interrupt my reading or switch to another module.
   Given the user is reading a text and sees the word "grela"
        with an underline
   When the user taps the word
-  Then a popup card appears over the text
+  Then a popup card rises from the bottom of the screen
+  And the line being read stays visible above it
+  And the tapped word turns Oro in the line while the card is open
   And the card contains the word, brief meaning, and one-line etymology
   And the card background is Negro at 95% opacity
 

@@ -117,7 +117,7 @@ Five colors total:
   Carmín #7B2233 — rare signal. Quiz errors, exit confirmation. 2-3% max.
   Humo #8A8078 — secondary text. Dates, authors, subtitles.
 
-Typography: Cormorant Garamond for poetry and headings. Inter for UI and cards.
+Typography: Cormorant Garamond for poetry and headings. Montserrat for reading copy on cards; actions and labels in Cormorant.
 No icons. No illustrations of dancers. No stock photos.
 No bounce animations. Only fade and ease-in-out.
 Silence as a design element: empty black screens between stanzas,

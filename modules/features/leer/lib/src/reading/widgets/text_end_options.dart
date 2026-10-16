@@ -17,25 +17,32 @@ class TextEndOptions extends StatelessWidget {
   Widget build(BuildContext context) {
     final AppTranslations t = context.translations;
 
-    return AppFadeIn(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        spacing: AppDimens.gapL,
-        children: <Widget>[
-          AppTextButton(
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      spacing: AppDimens.gapS,
+      children: <Widget>[
+        AppFadeIn(
+          child: AppTextButton(
             text: t.leer.end.anotherText,
             onPressed: onAnotherTextPressed,
           ),
-          AppTextButton(
+        ),
+        AppFadeIn(
+          delay: AppMotions.staggerInterval,
+          child: AppTextButton(
             text: t.leer.end.breathe,
             onPressed: onBreathePressed,
           ),
-          AppTextButton(
+        ),
+        AppFadeIn(
+          delay: AppMotions.staggerInterval * 2,
+          child: AppTextButton(
             text: t.leer.end.home,
             onPressed: onHomePressed,
+            style: AppTextButtonStyle.quiet,
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

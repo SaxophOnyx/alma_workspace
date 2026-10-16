@@ -21,11 +21,11 @@ class QuizResult extends StatelessWidget {
 
     return Column(
       mainAxisSize: MainAxisSize.min,
-      spacing: AppDimens.gapM,
+      spacing: AppDimens.gapS,
       children: <Widget>[
         AppText(
           text: t.hablar.quiz.result(correct: correctCount, total: questionCount),
-          style: context.appTexts.listTitle,
+          style: context.appTexts.poetry,
           maxLines: null,
           textAlign: TextAlign.center,
           color: context.appColors.textPrimary,
@@ -38,6 +38,7 @@ class QuizResult extends StatelessWidget {
         AppTextButton(
           text: t.hablar.quiz.backToHablar,
           onPressed: onBackToHablarPressed,
+          style: AppTextButtonStyle.quiet,
         ),
       ],
     );

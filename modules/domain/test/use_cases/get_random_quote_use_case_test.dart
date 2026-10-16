@@ -26,9 +26,9 @@ class _FixedRandom implements Random {
   double nextDouble() => throw UnimplementedError();
 }
 
-const Quote _first = Quote(line: 'first', title: 'Uno', year: 1917, textId: 'uno');
-const Quote _second = Quote(line: 'second', title: 'Dos', year: 1930, textId: 'dos');
-const Quote _third = Quote(line: 'third', title: 'Tres', year: 1948, textId: 'tres');
+const Quote _first = Quote(line: TextLine(segments: <TextSegment>[TextSegment(text: 'first')]), title: 'Uno', year: 1917, textId: 'uno');
+const Quote _second = Quote(line: TextLine(segments: <TextSegment>[TextSegment(text: 'second')]), title: 'Dos', year: 1930, textId: 'dos');
+const Quote _third = Quote(line: TextLine(segments: <TextSegment>[TextSegment(text: 'third')]), title: 'Tres', year: 1948, textId: 'tres');
 
 void main() {
   late _MockQuoteRepository repository;

@@ -9,10 +9,22 @@ void main() {
         const QuoteEntity(line: 'Y si un día la suerte,\nque es grela...', title: 'Yira, yira', year: 1930, textId: 'yira_yira'),
       );
 
-      expect(quote.line, 'Y si un día la suerte,\nque es grela...');
+      expect(quote.line.text, 'Y si un día la suerte,\nque es grela...');
       expect(quote.title, 'Yira, yira');
       expect(quote.year, 1930);
       expect(quote.textId, 'yira_yira');
+    });
+
+    test('marks Lunfardo words in the line', () {
+      final Quote quote = QuoteMapper.fromEntity(
+        const QuoteEntity(line: 'que es {grela}...', title: 'Yira, yira', year: 1930, textId: 'yira_yira'),
+      );
+
+      expect(quote.line.text, 'que es grela...');
+      expect(
+        quote.line.segments.where((TextSegment s) => s.isLunfardo).map((TextSegment s) => s.wordId),
+        <String>['grela'],
+      );
     });
 
     test('throws FormatException for an empty line', () {

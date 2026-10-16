@@ -2,17 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:shared_ui/shared_ui.dart';
 
 class OnboardingPathsSlide extends StatelessWidget {
-  final bool isRevealed;
-
-  const OnboardingPathsSlide({
-    super.key,
-    required this.isRevealed,
-  });
+  const OnboardingPathsSlide({super.key});
 
   @override
   Widget build(BuildContext context) {
-    if (!isRevealed) return const SizedBox.shrink();
-
     final AppTranslations t = context.translations;
 
     return Column(
@@ -62,7 +55,7 @@ class _PathLine extends StatelessWidget {
       children: <Widget>[
         AppText(
           text: title,
-          style: texts.wordHeadline,
+          style: texts.headlineLarge,
           textAlign: TextAlign.center,
         ),
         AppText(

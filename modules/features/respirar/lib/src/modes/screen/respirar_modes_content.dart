@@ -14,30 +14,22 @@ class RespirarModesContent extends StatelessWidget {
 
     return AppScaffold(
       onBack: () => bloc.add(const ModesBackPressed()),
-      body: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          spacing: AppDimens.gapM,
-          children: <Widget>[
-            AppText(
-              text: t.respirar.title,
-              style: context.appTexts.title,
-              textAlign: TextAlign.center,
+      runningHead: t.common.brand,
+      body: AppMenuLayout(
+        title: t.respirar.title,
+        items: <Widget>[
+          for (final BreathingMode mode in BreathingMode.values)
+            AppTextButton(
+              text: switch (mode) {
+                BreathingMode.compas => t.respirar.modes.compas,
+                BreathingMode.pausa => t.respirar.modes.pausa,
+                BreathingMode.caminar => t.respirar.modes.caminar,
+                BreathingMode.abrazo => t.respirar.modes.abrazo,
+              },
+              onPressed: () => bloc.add(ModeSelected(mode)),
+              style: AppTextButtonStyle.navigation,
             ),
-            const SizedBox(height: AppDimens.gapL),
-            for (final BreathingMode mode in BreathingMode.values)
-              AppTextButton(
-                text: switch (mode) {
-                  BreathingMode.compas => t.respirar.modes.compas,
-                  BreathingMode.pausa => t.respirar.modes.pausa,
-                  BreathingMode.caminar => t.respirar.modes.caminar,
-                  BreathingMode.abrazo => t.respirar.modes.abrazo,
-                },
-                onPressed: () => bloc.add(ModeSelected(mode)),
-                style: AppTextButtonStyle.menu,
-              ),
-          ],
-        ),
+        ],
       ),
     );
   }

@@ -3,12 +3,14 @@ import 'package:shared_ui/shared_ui.dart';
 
 class TextListItem extends StatelessWidget {
   final String title;
+  final String author;
   final int year;
   final VoidCallback onPressed;
 
   const TextListItem({
     super.key,
     required this.title,
+    required this.author,
     required this.year,
     required this.onPressed,
   });
@@ -33,16 +35,26 @@ class TextListItem extends StatelessWidget {
               spacing: AppDimens.gapM,
               children: <Widget>[
                 Expanded(
-                  child: AppText(
-                    text: title,
-                    style: texts.listTitle,
-                    maxLines: null,
-                    color: colors.textPrimary,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      AppText(
+                        text: title,
+                        style: texts.menu,
+                        maxLines: null,
+                        color: colors.textPrimary,
+                      ),
+                      AppText(
+                        text: author,
+                        style: texts.captionSmall,
+                        color: colors.textSecondary,
+                      ),
+                    ],
                   ),
                 ),
                 AppText(
                   text: '$year',
-                  style: texts.captionSmall,
+                  style: texts.listTitle,
                   color: colors.textSecondary,
                 ),
               ],

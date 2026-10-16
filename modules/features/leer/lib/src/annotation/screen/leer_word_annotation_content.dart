@@ -16,25 +16,22 @@ class LeerWordAnnotationContent extends StatelessWidget {
       child: GestureDetector(
         behavior: HitTestBehavior.opaque,
         onTap: () => bloc.add(const ClosePressed()),
-        child: SafeArea(
-          child: Center(
-            child: Padding(
-              padding: const EdgeInsets.all(AppDimens.screenPadding),
-              child: BlocBuilder<LeerWordAnnotationBloc, LeerWordAnnotationState>(
-                builder: (BuildContext context, LeerWordAnnotationState state) {
-                  if (state.isLoading) return const SizedBox.shrink();
+        // Anchored to the bottom so the line being read stays in view above it.
+        child: Align(
+          alignment: Alignment.bottomCenter,
+          child: BlocBuilder<LeerWordAnnotationBloc, LeerWordAnnotationState>(
+            builder: (BuildContext context, LeerWordAnnotationState state) {
+              if (state.isLoading) return const SizedBox.shrink();
 
-                  return WordAnnotationCard(
-                    word: state.word,
-                    isInDictionary: state.isInDictionary,
-                    isAdding: state.isAdding,
-                    error: state.error,
-                    onAddPressed: () => bloc.add(const AddPressed()),
-                    onClosePressed: () => bloc.add(const ClosePressed()),
-                  );
-                },
-              ),
-            ),
+              return WordAnnotationCard(
+                word: state.word,
+                isInDictionary: state.isInDictionary,
+                isAdding: state.isAdding,
+                error: state.error,
+                onAddPressed: () => bloc.add(const AddPressed()),
+                onClosePressed: () => bloc.add(const ClosePressed()),
+              );
+            },
           ),
         ),
       ),

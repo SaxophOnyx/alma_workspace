@@ -13,13 +13,27 @@ class OnboardingEntrySlide extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: AppTextButton(
-        text: context.translations.onboarding.entry.enter,
-        onPressed: onEnterPressed,
-        style: AppTextButtonStyle.navigation,
-        isHighlighted: isEnterHighlighted,
-      ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      spacing: AppDimens.gapM,
+      children: <Widget>[
+        AppTextButton(
+          text: context.translations.onboarding.entry.enter,
+          onPressed: onEnterPressed,
+          style: AppTextButtonStyle.title,
+          isHighlighted: isEnterHighlighted,
+        ),
+        AppFadeIn(
+          delay: AppMotions.durationMedium,
+          child: AppText(
+            text: context.translations.onboarding.entry.caption,
+            style: context.appTexts.captionSmall,
+            maxLines: null,
+            textAlign: TextAlign.center,
+            color: context.appColors.textSecondary,
+          ),
+        ),
+      ],
     );
   }
 }

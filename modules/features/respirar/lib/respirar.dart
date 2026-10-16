@@ -1,5 +1,4 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/material.dart';
 import 'package:shared_ui/shared_ui.dart';
 
 import 'respirar.gr.dart';
@@ -23,10 +22,7 @@ class RespirarRouter extends RootStackRouter {
     CustomRoute<bool>(
       page: RespirarLeaveConfirmationRoute.page,
       opaque: false,
-      barrierColor: Colors.transparent,
-      transitionsBuilder: AppPageTransitions.fade,
-      duration: AppMotions.durationShort,
-      reverseDuration: AppMotions.durationShort,
+      customRouteBuilder: AppPageTransitions.overlay,
     ),
     AutoRoute(
       page: RespirarSessionEndRoute.page,

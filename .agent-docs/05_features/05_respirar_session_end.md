@@ -16,8 +16,10 @@ continuation of the practice.
   When the screen is black for 2 seconds
   Then one line of tango poetry fades in (fade in, 1.5 sec)
   And below the line — the poem title and year
-  And the font is Cormorant Garamond, 20pt, Crema
-  And the title and year are Inter, 13pt, Humo
+  And the font is Cormorant Garamond, 24pt, Crema
+  And Lunfardo words in the line have a thin Oro underline
+  And the title and year (Montserrat, 13pt, Humo) fade in 600ms later
+  And the actions fade in 600ms after that
 
 US 5.2
 As a user,

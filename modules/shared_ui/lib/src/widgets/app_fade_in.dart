@@ -22,7 +22,7 @@ class AppFadeIn extends StatefulWidget {
 
 class _AppFadeInState extends State<AppFadeIn> with SingleTickerProviderStateMixin {
   late final AnimationController _controller;
-  late final CurvedAnimation _opacity;
+  late final CurvedAnimation _progress;
   late final Timer _delayTimer;
 
   @override
@@ -32,9 +32,9 @@ class _AppFadeInState extends State<AppFadeIn> with SingleTickerProviderStateMix
       vsync: this,
       duration: widget.duration,
     );
-    _opacity = CurvedAnimation(
+    _progress = CurvedAnimation(
       parent: _controller,
-      curve: AppMotions.standard,
+      curve: AppMotions.entrance,
     );
     _delayTimer = Timer(widget.delay, _controller.forward);
   }
@@ -42,15 +42,15 @@ class _AppFadeInState extends State<AppFadeIn> with SingleTickerProviderStateMix
   @override
   void dispose() {
     _delayTimer.cancel();
-    _opacity.dispose();
+    _progress.dispose();
     _controller.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return FadeTransition(
-      opacity: _opacity,
+    return AppEntrance(
+      animation: _progress,
       child: widget.child,
     );
   }

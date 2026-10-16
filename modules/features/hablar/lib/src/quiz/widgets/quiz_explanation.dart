@@ -21,28 +21,37 @@ class QuizExplanation extends StatelessWidget {
     final LunfardoWord word = question.word;
 
     return Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          AppText(
-            text: word.word,
-            style: texts.title,
-            maxLines: null,
-            color: colors.accent,
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        AppText(
+          text: word.word,
+          style: texts.wordHeadline,
+          maxLines: null,
+          color: colors.accent,
+        ),
+        const SizedBox(height: AppDimens.gapS),
+        AppText(
+          text: word.meaning,
+          style: texts.bodyLarge,
+          maxLines: null,
+          color: colors.textPrimary,
+        ),
+        const SizedBox(height: AppDimens.gapL),
+        if (question.type == QuizQuestionType.example)
+          ExampleLine(line: word.example.line, wordId: word.id)
+        else
+          EtymologyChain(steps: word.etymology),
+        const SizedBox(height: AppDimens.gapXxl),
+        AppFadeIn(
+          delay: AppMotions.durationLong,
+          child: AppText(
+            text: context.translations.hablar.quiz.continueHint,
+            style: texts.smallCaps,
+            color: colors.textSecondary,
           ),
-          const SizedBox(height: AppDimens.gapS),
-          AppText(
-            text: word.meaning,
-            style: texts.body,
-            maxLines: null,
-            color: colors.textPrimary,
-          ),
-          const SizedBox(height: AppDimens.gapL),
-          if (question.type == QuizQuestionType.example)
-            ExampleLine(line: word.example.line, wordId: word.id)
-          else
-            EtymologyChain(steps: word.etymology),
-        ],
+        ),
+      ],
     );
   }
 }

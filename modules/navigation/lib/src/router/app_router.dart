@@ -11,7 +11,7 @@ import 'package:shared_ui/shared_ui.dart';
 class AppRouter extends RootStackRouter {
   @override
   RouteType get defaultRouteType => RouteType.custom(
-    transitionsBuilder: AppPageTransitions.fade,
+    transitionsBuilder: AppPageTransitions.fadeThrough,
     duration: AppMotions.durationMedium,
     reverseDuration: AppMotions.durationMedium,
   );

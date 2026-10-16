@@ -6,8 +6,17 @@ class LaunchContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const AppScaffold(
-      body: SizedBox.shrink(),
+    return AppScaffold(
+      body: Center(
+        child: AppFadeIn(
+          delay: AppMotions.durationShort,
+          child: AppText(
+            text: context.translations.common.brand,
+            style: context.appTexts.brand,
+            color: context.appColors.textPrimary,
+          ),
+        ),
+      ),
     );
   }
 }

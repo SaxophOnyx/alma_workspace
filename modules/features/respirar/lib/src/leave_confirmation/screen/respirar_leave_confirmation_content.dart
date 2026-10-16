@@ -5,7 +5,7 @@ import '../bloc/respirar_leave_confirmation_bloc.dart';
 
 class RespirarLeaveConfirmationContent extends StatelessWidget {
   // Below the centered point, so the frozen point stays visible above the question.
-  static const Alignment _alignment = Alignment(0, 0.4);
+  static const Alignment _alignment = Alignment(0, 0.55);
 
   const RespirarLeaveConfirmationContent({super.key});
 
@@ -26,8 +26,9 @@ class RespirarLeaveConfirmationContent extends StatelessWidget {
             children: <Widget>[
               AppText(
                 text: t.respirar.session.leaveQuestion,
-                style: context.appTexts.body,
+                style: context.appTexts.menu,
                 textAlign: TextAlign.center,
+                color: context.appColors.textPrimary,
               ),
               Row(
                 mainAxisSize: MainAxisSize.min,

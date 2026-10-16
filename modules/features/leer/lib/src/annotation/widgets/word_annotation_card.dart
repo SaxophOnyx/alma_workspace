@@ -34,56 +34,73 @@ class WordAnnotationCard extends StatelessWidget {
       // Swallows taps on the card so only taps outside it close the popup.
       behavior: HitTestBehavior.opaque,
       onTap: () {},
-      child: DecoratedBox(
-        decoration: BoxDecoration(color: colors.overlay),
-        child: Container(
-          width: double.infinity,
-          padding: const EdgeInsets.all(AppDimens.screenPadding),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              if (word != null) ...<Widget>[
-                AppText(
-                  text: word.word,
-                  style: texts.title,
-                  maxLines: null,
-                  color: colors.accent,
-                ),
-                const SizedBox(height: AppDimens.gapS),
-                AppText(
-                  text: word.meaning,
-                  style: texts.body,
-                  maxLines: null,
-                  color: colors.textPrimary,
-                ),
-                const SizedBox(height: AppDimens.gapXs),
-                if (word.etymology.isNotEmpty)
-                  // One line only (US 12.1); the word card in Hablar shows the whole chain.
+      child: ColoredBox(
+        color: colors.overlay,
+        child: SafeArea(
+          top: false,
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(
+              AppDimens.screenPadding,
+              AppDimens.gapXl,
+              AppDimens.screenPadding,
+              AppDimens.gapL,
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                if (word != null) ...<Widget>[
                   AppText(
-                    text: word.etymology.first,
-                    style: texts.caption,
+                    text: word.word,
+                    style: texts.wordHeadline,
+                    maxLines: null,
+                    color: colors.accent,
+                  ),
+                  const SizedBox(height: AppDimens.gapS),
+                  AppText(
+                    text: word.meaning,
+                    style: texts.bodyLarge,
+                    maxLines: null,
+                    color: colors.textPrimary,
+                  ),
+                  if (word.etymology.isNotEmpty) ...<Widget>[
+                    const SizedBox(height: AppDimens.gapXs),
+                    // One line only (US 12.1); the word card in Hablar shows the whole chain.
+                    AppText(
+                      text: word.etymology.first,
+                      style: texts.caption,
+                      color: colors.textSecondary,
+                    ),
+                  ],
+                ],
+                if (error != null) ...<Widget>[
+                  const SizedBox(height: AppDimens.gapS),
+                  AppText(
+                    text: LeerExceptionMapper.map(error, t),
+                    style: texts.captionSmall,
+                    maxLines: null,
                     color: colors.textSecondary,
                   ),
+                ],
                 const SizedBox(height: AppDimens.gapL),
-                AppTextButton(
-                  text: isInDictionary ? t.leer.annotation.inDictionary : t.leer.annotation.add,
-                  onPressed: onAddPressed,
-                  isEnabled: !isInDictionary && !isAdding,
+                Row(
+                  children: <Widget>[
+                    if (word != null)
+                      AppTextButton(
+                        text: isInDictionary ? t.leer.annotation.inDictionary : t.leer.annotation.add,
+                        onPressed: onAddPressed,
+                        isEnabled: !isInDictionary && !isAdding,
+                      ),
+                    const Spacer(),
+                    AppTextButton(
+                      text: t.leer.annotation.close,
+                      onPressed: onClosePressed,
+                      style: AppTextButtonStyle.quiet,
+                    ),
+                  ],
                 ),
               ],
-              if (error != null)
-                AppText(
-                  text: LeerExceptionMapper.map(error, t),
-                  style: texts.captionSmall,
-                  maxLines: null,
-                  color: colors.textSecondary,
-                ),
-              AppTextButton(
-                text: t.leer.annotation.close,
-                onPressed: onClosePressed,
-              ),
-            ],
+            ),
           ),
         ),
       ),

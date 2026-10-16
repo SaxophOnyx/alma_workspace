@@ -1,7 +1,9 @@
 {
   "common": {
     "back": "Back",
-    "backArrow": "←"
+    "backArrow": "←",
+    "brand": "Alma",
+    "tagline": "tres caminos del tango"
   },
   "home": {
     "respirar": "Respirar",
@@ -20,7 +22,8 @@
     "session": {
       "leaveQuestion": "Leave this session?",
       "leave": "Leave",
-      "stay": "Stay"
+      "stay": "Stay",
+      "paused": "pausa"
     },
     "end": {
       "source": "— $title, $year",
@@ -37,31 +40,37 @@
       "quiz": "Quiz"
     },
     "card": {
-      "etymology": "Etymology:",
+      "etymology": "Etymology",
       "etymologyStep": "→ $step",
-      "example": "Example:",
+      "example": "Example",
       "source": "— $title, $year",
       "openText": "Open text →",
       "related": "Related: $words",
       "relatedSeparator": ", ",
       "add": "Add to my dictionary",
-      "inDictionary": "In dictionary"
+      "inDictionary": "In your dictionary"
     },
     "dictionary": {
       "empty": "Nothing here yet. Tap a word in a text to begin.",
-      "complete": "Your Lunfardo is complete. $count words."
+      "complete": "Your Lunfardo is complete. $count words.",
+      "wordCount": {
+        "one": "$n word",
+        "other": "$n words"
+      }
     },
     "quiz": {
-      "meaningPrompt": "What does \"$word\" mean?",
+      "meaningPrompt": "What does “$word” mean?",
       "wordPrompt": "Which word means this?",
       "etymologyPrompt": "Which word comes from this?",
       "examplePrompt": "Which word completes the line?",
-      "relatedPrompt": "Which word is related to \"$related\"?",
+      "relatedPrompt": "Which word is related to “$related”?",
       "blank": "___",
       "result": "You recalled $correct out of $total",
       "tryAgain": "Try again",
       "backToHablar": "Back to Hablar",
-      "empty": "Meet a few words first: open the word of the day or tap a word in a text."
+      "empty": "Meet a few words first: open the word of the day or tap a word in a text.",
+      "progress": "$current / $total",
+      "continueHint": "tap to continue"
     },
     "errors": {
       "wordUnavailable": "This word could not be opened.",
@@ -75,7 +84,7 @@
     "read": "Read",
     "annotation": {
       "add": "Add to my dictionary",
-      "inDictionary": "In dictionary",
+      "inDictionary": "In your dictionary",
       "close": "Close"
     },
     "end": {
@@ -88,33 +97,38 @@
       "wordUnavailable": "This word could not be opened.",
       "dictionaryUnavailable": "Your dictionary is unavailable right now.",
       "unknown": "Something went wrong."
+    },
+    "reading": {
+      "hint": "tap to continue"
     }
   },
   "onboarding": {
     "skip": "Skip",
     "intro": {
       "title": "Alma",
-      "line1": "A quiet room in a city of words.",
-      "line2": "Nothing here will hurry you.",
-      "line3": "You breathe, you listen, you answer.",
-      "line4": "The city will wait for you."
+      "line1": "Tango is not what you dance.",
+      "line2": "It’s what you breathe,",
+      "line3": "what you whisper,",
+      "line4": "what you leave unsaid."
     },
     "paths": {
       "breatheTitle": "Respirar",
-      "breatheSubtitle": "Slow, steady breath",
+      "breatheSubtitle": "breathe in the pauses",
       "speakTitle": "Hablar",
-      "speakSubtitle": "Speak to the city",
+      "speakSubtitle": "learn the words they whispered",
       "readTitle": "Leer",
-      "readSubtitle": "Stories in whispers"
+      "readSubtitle": "read what they felt"
     },
     "principles": {
       "noAccount": "No account.",
       "noInternet": "No internet.",
       "noNotifications": "No notifications.",
-      "closing": "Just you, the dark, and a city that whispers."
+      "closing": "Just you, the dark,\nand a city that whispers."
     },
     "entry": {
-      "enter": "Enter"
-    }
+      "enter": "Enter",
+      "caption": "Alma does not store your data.\nIt has nothing to store."
+    },
+    "next": "Next"
   }
 }

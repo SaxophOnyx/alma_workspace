@@ -7,6 +7,9 @@ final class LeerReadingState {
   final int lineIndex;
   final ReadingPhase phase;
   final bool isNavigating;
+
+  /// The Lunfardo word whose annotation is open; marked in the line while it is.
+  final String? activeWordId;
   final Exception? error;
 
   const LeerReadingState({
@@ -16,6 +19,7 @@ final class LeerReadingState {
     this.lineIndex = 0,
     this.phase = ReadingPhase.line,
     this.isNavigating = false,
+    this.activeWordId,
     this.error,
   });
 
@@ -36,6 +40,7 @@ final class LeerReadingState {
     int? lineIndex,
     ReadingPhase? phase,
     bool? isNavigating,
+    Object? activeWordId = _unset,
     Object? error = _unset,
   }) {
     return LeerReadingState(
@@ -45,6 +50,7 @@ final class LeerReadingState {
       lineIndex: lineIndex ?? this.lineIndex,
       phase: phase ?? this.phase,
       isNavigating: isNavigating ?? this.isNavigating,
+      activeWordId: identical(activeWordId, _unset) ? this.activeWordId : activeWordId as String?,
       error: identical(error, _unset) ? this.error : error as Exception?,
     );
   }

@@ -1,6 +1,7 @@
 import 'package:domain/domain.dart';
 
 import '../entities/entities.dart';
+import 'text_mapper.dart';
 
 final class QuoteMapper {
   const QuoteMapper._();
@@ -14,7 +15,7 @@ final class QuoteMapper {
     }
 
     return Quote(
-      line: entity.line,
+      line: TextMapper.lineFromMarkup(entity.line),
       title: entity.title,
       year: entity.year,
       textId: entity.textId,

@@ -16,6 +16,7 @@ class HablarWordCardContent extends StatelessWidget {
 
     return AppScaffold(
       onBack: () => bloc.add(const WordCardBackPressed()),
+      runningHead: t.hablar.title,
       body: BlocBuilder<HablarWordCardBloc, HablarWordCardState>(
         buildWhen: (HablarWordCardState previous, HablarWordCardState current) =>
             previous.isLoading != current.isLoading ||
@@ -24,7 +25,7 @@ class HablarWordCardContent extends StatelessWidget {
             previous.isAdding != current.isAdding ||
             previous.error != current.error,
         builder: (BuildContext context, HablarWordCardState state) {
-          if (state.isLoading) return const SizedBox.shrink();
+          if (state.isLoading) return const AppLoadingPulse();
 
           final LunfardoWord? word = state.word;
           final Exception? error = state.error;
@@ -42,18 +43,20 @@ class HablarWordCardContent extends StatelessWidget {
             );
           }
 
-          return AppFadeIn(
-            duration: AppMotions.durationMedium,
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.all(AppDimens.screenPadding),
-              child: WordCard(
-                word: word,
-                isInDictionary: state.isInDictionary,
-                isAdding: state.isAdding,
-                errorText: errorText,
-                onAddPressed: () => bloc.add(const AddPressed()),
-                onOpenTextPressed: () => bloc.add(const OpenTextPressed()),
-              ),
+          return SingleChildScrollView(
+            padding: const EdgeInsets.fromLTRB(
+              AppDimens.screenPadding,
+              AppDimens.gapXl,
+              AppDimens.screenPadding,
+              AppDimens.gapXxl,
+            ),
+            child: WordCard(
+              word: word,
+              isInDictionary: state.isInDictionary,
+              isAdding: state.isAdding,
+              errorText: errorText,
+              onAddPressed: () => bloc.add(const AddPressed()),
+              onOpenTextPressed: () => bloc.add(const OpenTextPressed()),
             ),
           );
         },

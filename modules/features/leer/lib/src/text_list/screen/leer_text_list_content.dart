@@ -7,6 +7,9 @@ import '../bloc/leer_text_list_bloc.dart';
 import '../widgets/text_list_item.dart';
 
 class LeerTextListContent extends StatelessWidget {
+  // Only the first screenful enters one by one; texts further down appear as they scroll in.
+  static const int _staggeredItemCount = 10;
+
   const LeerTextListContent({super.key});
 
   @override
@@ -16,14 +19,19 @@ class LeerTextListContent extends StatelessWidget {
 
     return AppScaffold(
       onBack: () => bloc.add(const TextListBackPressed()),
+      runningHead: t.common.brand,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           Padding(
-            padding: const EdgeInsets.all(AppDimens.screenPadding),
-            child: AppText(
-              text: t.leer.title,
-              style: context.appTexts.title,
+            padding: const EdgeInsets.fromLTRB(
+              AppDimens.screenPadding,
+              AppDimens.gapXl,
+              AppDimens.screenPadding,
+              AppDimens.gapL,
+            ),
+            child: AppFadeIn(
+              child: AppSectionTitle(text: t.leer.title),
             ),
           ),
           Expanded(
@@ -33,7 +41,7 @@ class LeerTextListContent extends StatelessWidget {
                   previous.texts != current.texts ||
                   previous.error != current.error,
               builder: (BuildContext context, LeerTextListState state) {
-                if (state.isLoading) return const SizedBox.shrink();
+                if (state.isLoading) return const AppLoadingPulse();
 
                 final Exception? error = state.error;
                 if (error != null) {
@@ -48,20 +56,21 @@ class LeerTextListContent extends StatelessWidget {
                   );
                 }
 
-                return AppFadeIn(
-                  duration: AppMotions.durationMedium,
-                  child: ListView.builder(
-                    padding: const EdgeInsets.symmetric(horizontal: AppDimens.screenPadding),
-                    itemCount: state.texts.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      final TangoText text = state.texts[index];
-                      return TextListItem(
+                return ListView.builder(
+                  padding: const EdgeInsets.symmetric(horizontal: AppDimens.screenPadding),
+                  itemCount: state.texts.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    final TangoText text = state.texts[index];
+                    return AppFadeIn(
+                      delay: index < _staggeredItemCount ? AppMotions.staggerStep * (index + 1) : Duration.zero,
+                      child: TextListItem(
                         title: text.title,
+                        author: text.author,
                         year: text.year,
                         onPressed: () => bloc.add(TextPressed(text.id)),
-                      );
-                    },
-                  ),
+                      ),
+                    );
+                  },
                 );
               },
             ),

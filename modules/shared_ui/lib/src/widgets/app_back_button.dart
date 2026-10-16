@@ -18,6 +18,7 @@ class AppBackButton extends StatelessWidget {
       text: context.translations.common.backArrow,
       semanticLabel: context.translations.common.back,
       onPressed: onPressed,
+      style: AppTextButtonStyle.back,
       isEnabled: isEnabled,
     );
   }

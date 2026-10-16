@@ -34,3 +34,7 @@ final class QuizBackPressed extends HablarQuizEvent {
 final class _ExplanationTimeElapsed extends HablarQuizEvent {
   const _ExplanationTimeElapsed();
 }
+
+final class _AnswerEchoElapsed extends HablarQuizEvent {
+  const _AnswerEchoElapsed();
+}

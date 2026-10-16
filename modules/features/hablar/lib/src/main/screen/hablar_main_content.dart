@@ -14,45 +14,31 @@ class HablarMainContent extends StatelessWidget {
 
     return AppScaffold(
       onBack: () => bloc.add(const HablarBackPressed()),
-      body: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          spacing: AppDimens.gapM,
-          children: <Widget>[
-            AppText(
-              text: t.hablar.title,
-              style: context.appTexts.title,
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: AppDimens.gapL),
-            BlocBuilder<HablarMainBloc, HablarMainState>(
-              buildWhen: (HablarMainState previous, HablarMainState current) =>
-                  previous.dictionaryCount != current.dictionaryCount,
-              builder: (BuildContext context, HablarMainState state) {
-                final int? count = state.dictionaryCount;
-                return Column(
-                  mainAxisSize: MainAxisSize.min,
-                  spacing: AppDimens.gapM,
-                  children: <Widget>[
-                    for (final HablarEntry entry in HablarEntry.values)
-                      AppTextButton(
-                        text: switch (entry) {
-                          HablarEntry.wordOfTheDay => t.hablar.entries.wordOfTheDay,
-                          HablarEntry.dictionary =>
-                            count == null
-                                ? t.hablar.entries.dictionary
-                                : t.hablar.entries.dictionaryWithCount(count: count),
-                          HablarEntry.quiz => t.hablar.entries.quiz,
-                        },
-                        onPressed: () => bloc.add(EntryPressed(entry)),
-                        style: AppTextButtonStyle.menu,
-                      ),
-                  ],
-                );
-              },
-            ),
-          ],
-        ),
+      runningHead: t.common.brand,
+      body: BlocBuilder<HablarMainBloc, HablarMainState>(
+        buildWhen: (HablarMainState previous, HablarMainState current) =>
+            previous.dictionaryCount != current.dictionaryCount,
+        builder: (BuildContext context, HablarMainState state) {
+          final int? count = state.dictionaryCount;
+          return AppMenuLayout(
+            title: t.hablar.title,
+            items: <Widget>[
+              for (final HablarEntry entry in HablarEntry.values)
+                AppTextButton(
+                  text: switch (entry) {
+                    HablarEntry.wordOfTheDay => t.hablar.entries.wordOfTheDay,
+                    HablarEntry.dictionary =>
+                      count == null
+                          ? t.hablar.entries.dictionary
+                          : t.hablar.entries.dictionaryWithCount(count: count),
+                    HablarEntry.quiz => t.hablar.entries.quiz,
+                  },
+                  onPressed: () => bloc.add(EntryPressed(entry)),
+                  style: AppTextButtonStyle.navigation,
+                ),
+            ],
+          );
+        },
       ),
     );
   }

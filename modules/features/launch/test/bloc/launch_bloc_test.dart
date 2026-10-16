@@ -30,6 +30,7 @@ void main() {
     return LaunchBloc(
       getOnboardingCompletedUseCase: getOnboardingCompletedUseCase,
       navigator: navigator,
+      brandDuration: Duration.zero,
     );
   }
 
@@ -62,6 +63,8 @@ void main() {
       },
       build: buildBloc,
       act: (LaunchBloc bloc) => bloc.add(const LaunchStarted()),
+      // The first-launch brand pause is zero here but still yields to the event loop.
+      wait: Duration.zero,
       expect: () => <Matcher>[
         isA<LaunchState>().having((LaunchState s) => s.isChecking, 'isChecking', isTrue),
       ],
@@ -78,6 +81,8 @@ void main() {
       },
       build: buildBloc,
       act: (LaunchBloc bloc) => bloc.add(const LaunchStarted()),
+      // The first-launch brand pause is zero here but still yields to the event loop.
+      wait: Duration.zero,
       expect: () => <Matcher>[
         isA<LaunchState>().having((LaunchState s) => s.isChecking, 'isChecking', isTrue),
       ],
@@ -94,6 +99,8 @@ void main() {
       },
       build: buildBloc,
       act: (LaunchBloc bloc) => bloc.add(const LaunchStarted()),
+      // The first-launch brand pause is zero here but still yields to the event loop.
+      wait: Duration.zero,
       verify: (_) {
         verify(() => navigator.openOnboarding()).called(1);
         verifyNever(() => navigator.openHome());
