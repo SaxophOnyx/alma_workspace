@@ -1,0 +1,8 @@
+base_locale: en-US
+fallback_strategy: base_locale
+
+input_directory: assets/localization
+output_directory: lib/src/localization/generated
+
+input_file_pattern: .i18n.json
+output_file_name: translations.g.dart

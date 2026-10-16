@@ -1,0 +1,19 @@
+name: alma_workspace
+publish_to: none
+
+version: 0.0.1+1
+
+environment:
+  sdk: ^3.12.0
+
+dev_dependencies:
+  flutter_lints: ^6.0.0
+
+workspace:
+  - app
+  - modules/core
+  - modules/shared_ui
+  - modules/data
+  - modules/domain
+  - modules/navigation
+  - modules/features/home
