@@ -7,6 +7,7 @@ enum AppTextButtonStyle {
   title,
   menu,
   action,
+  signal,
 }
 
 class AppTextButton extends StatelessWidget {
@@ -34,7 +35,7 @@ class AppTextButton extends StatelessWidget {
       AppTextButtonStyle.navigation => context.appTexts.navigation,
       AppTextButtonStyle.title => context.appTexts.title,
       AppTextButtonStyle.menu => context.appTexts.menu,
-      AppTextButtonStyle.action => context.appTexts.body,
+      AppTextButtonStyle.action || AppTextButtonStyle.signal => context.appTexts.body,
     };
 
     return TextButton(
@@ -43,6 +44,9 @@ class AppTextButton extends StatelessWidget {
         foregroundColor: WidgetStateProperty.resolveWith((Set<WidgetState> states) {
           if (states.contains(WidgetState.disabled)) {
             return colors.textSecondary;
+          }
+          if (style == AppTextButtonStyle.signal) {
+            return colors.signal;
           }
           if (isHighlighted || states.contains(WidgetState.pressed)) {
             return colors.accent;

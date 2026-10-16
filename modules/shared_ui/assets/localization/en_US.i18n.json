@@ -4,8 +4,29 @@
     "backArrow": "←"
   },
   "home": {
-    "title": "Home",
-    "subtitle": "This is your home page!"
+    "respirar": "Respirar",
+    "hablar": "Hablar",
+    "leer": "Leer"
+  },
+  "respirar": {
+    "title": "Respirar",
+    "modes": {
+      "compas": "Compás",
+      "pausa": "Pausa",
+      "caminar": "Caminar",
+      "abrazo": "Abrazo"
+    },
+    "durationMinutes": "$minutes min",
+    "session": {
+      "leaveQuestion": "Leave this session?",
+      "leave": "Leave",
+      "stay": "Stay"
+    },
+    "end": {
+      "source": "— $title, $year",
+      "readFullText": "Read the full text",
+      "home": "Home"
+    }
   },
   "onboarding": {
     "skip": "Skip",

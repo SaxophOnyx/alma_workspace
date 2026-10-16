@@ -2,6 +2,7 @@ import 'package:core/core.dart';
 import 'package:home/home.dart';
 import 'package:launch/launch.dart';
 import 'package:onboarding/onboarding.dart';
+import 'package:respirar/respirar.dart';
 
 import '../navigators/navigators.dart';
 import '../router/app_router.dart';
@@ -27,6 +28,9 @@ final class NavigationDI {
     );
     locator.registerLazySingleton<OnboardingNavigator>(
       () => RouterOnboardingNavigator(appRouter: locator<AppRouter>()),
+    );
+    locator.registerLazySingleton<RespirarNavigator>(
+      () => RouterRespirarNavigator(appRouter: locator<AppRouter>()),
     );
   }
 }

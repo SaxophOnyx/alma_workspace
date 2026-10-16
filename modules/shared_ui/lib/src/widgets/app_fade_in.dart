@@ -7,11 +7,13 @@ import '../../shared_ui.dart';
 class AppFadeIn extends StatefulWidget {
   final Widget child;
   final Duration delay;
+  final Duration duration;
 
   const AppFadeIn({
     super.key,
     required this.child,
     this.delay = Duration.zero,
+    this.duration = AppMotions.durationLong,
   });
 
   @override
@@ -28,7 +30,7 @@ class _AppFadeInState extends State<AppFadeIn> with SingleTickerProviderStateMix
     super.initState();
     _controller = AnimationController(
       vsync: this,
-      duration: AppMotions.durationLong,
+      duration: widget.duration,
     );
     _opacity = CurvedAnimation(
       parent: _controller,

@@ -13,4 +13,8 @@ final class AppDimens {
   static const double screenPadding = 24;
   static const double minTouchTarget = 48;
   static const double underlineThickness = 1;
+
+  static const double breathingPointRest = 12;
+  static const double breathingPointMin = 16;
+  static const double breathingPointMax = 80;
 }

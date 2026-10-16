@@ -1,0 +1,36 @@
+[
+  {
+    "mode": "compas",
+    "phases": [
+      { "type": "inhale", "durationMs": 6000 },
+      { "type": "hold", "durationMs": 1500 },
+      { "type": "exhale", "durationMs": 4500 }
+    ]
+  },
+  {
+    "mode": "pausa",
+    "phases": [
+      { "type": "inhale", "durationMs": 4000 },
+      { "type": "exhale", "durationMs": 4000 },
+      { "type": "hold", "durationMs": 3000 }
+    ],
+    "holdProgression": { "phaseIndex": 2, "fromMs": 3000, "toMs": 12000, "stepMs": 1000 }
+  },
+  {
+    "mode": "caminar",
+    "phases": [
+      { "type": "inhale", "durationMs": 3000 },
+      { "type": "exhale", "durationMs": 1500 },
+      { "type": "hold", "durationMs": 1500 }
+    ]
+  },
+  {
+    "mode": "abrazo",
+    "phases": [
+      { "type": "inhale", "durationMs": 5000 },
+      { "type": "hold", "durationMs": 3000 },
+      { "type": "exhale", "durationMs": 6000 },
+      { "type": "hold", "durationMs": 2000 }
+    ]
+  }
+]

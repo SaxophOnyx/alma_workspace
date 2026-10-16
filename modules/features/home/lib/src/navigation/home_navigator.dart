@@ -1,1 +1,7 @@
-abstract interface class HomeNavigator {}
+abstract interface class HomeNavigator {
+  Future<void> openRespirar();
+
+  Future<void> openHablar();
+
+  Future<void> openLeer();
+}

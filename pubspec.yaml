@@ -19,3 +19,4 @@ workspace:
   - modules/features/home
   - modules/features/launch
   - modules/features/onboarding
+  - modules/features/respirar
